@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>140</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Product
+--
+some properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>140</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Recipe
+--
+some properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>230</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Beer
+--
+some properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>230</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>BrewingStep
+--
+some properties
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
