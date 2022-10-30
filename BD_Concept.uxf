@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>10</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>250</x>
-      <y>0</y>
-      <w>190</w>
-      <h>120</h>
+      <x>1022</x>
+      <y>182</y>
+      <w>133</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>ingredient
 --
@@ -16,7 +16,8 @@ name : varchar(32){not null}
 origin : varchar(16)
 sub-origin : varchar (16)
 specificity : text
-
+unity: varchar(10)
+pricePerUnity: real
 
 </panel_attributes>
     <additional_attributes/>
@@ -24,10 +25,10 @@ specificity : text
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>50</x>
-      <y>650</y>
+      <x>357</x>
+      <y>210</y>
       <w>140</w>
-      <h>170</h>
+      <h>119</h>
     </coordinates>
     <panel_attributes>Recipe
 --
@@ -41,10 +42,10 @@ difficulty : integer{1-5}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>40</x>
-      <y>390</y>
-      <w>190</w>
-      <h>120</h>
+      <x>413</x>
+      <y>413</y>
+      <w>133</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>Beer
 --
@@ -60,15 +61,16 @@ bitterness : integer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>700</y>
-      <w>140</w>
-      <h>100</h>
+      <x>630</x>
+      <y>224</y>
+      <w>154</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>BrewingStep
 --
-stapName : varchar(32){not null}
-stepdescription : text
+stepName : varchar(32){not null}
+duration : real
+stepDescription : text
 
 </panel_attributes>
     <additional_attributes/>
@@ -76,10 +78,10 @@ stepdescription : text
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>190</y>
-      <w>180</w>
-      <h>110</h>
+      <x>735</x>
+      <y>399</y>
+      <w>182</w>
+      <h>77</h>
     </coordinates>
     <panel_attributes>Malt
 --
@@ -94,10 +96,10 @@ cereal : enum{barley, wheat, rye, rice}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>200</x>
-      <y>190</y>
-      <w>100</w>
-      <h>50</h>
+      <x>973</x>
+      <y>406</y>
+      <w>70</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>Water
 --
@@ -109,10 +111,10 @@ ph : real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>320</x>
-      <y>190</y>
-      <w>210</w>
-      <h>70</h>
+      <x>1057</x>
+      <y>392</y>
+      <w>161</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>Hopp
 --
@@ -127,10 +129,10 @@ alphaAcidRate : real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>190</y>
-      <w>140</w>
-      <h>130</h>
+      <x>1232</x>
+      <y>392</y>
+      <w>154</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>Yeast
 --
@@ -145,54 +147,54 @@ fMinTemperature : integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>310</x>
-      <y>110</y>
-      <w>80</w>
-      <h>100</h>
+      <x>1085</x>
+      <y>315</y>
+      <w>63</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;70.0;60.0;70.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>110</y>
-      <w>90</w>
-      <h>100</h>
+      <x>1001</x>
+      <y>315</y>
+      <w>105</w>
+      <h>105</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>70.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>130.0;10.0;130.0;60.0;10.0;60.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>60</x>
-      <y>110</y>
-      <w>250</w>
-      <h>100</h>
+      <x>826</x>
+      <y>315</y>
+      <w>280</w>
+      <h>98</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>230.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>380.0;10.0;380.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>340</x>
-      <y>110</y>
-      <w>270</w>
-      <h>100</h>
+      <x>1085</x>
+      <y>315</y>
+      <w>245</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;250.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;330.0;60.0;330.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>300</x>
-      <y>330</y>
-      <w>250</w>
-      <h>240</h>
+      <x>0</x>
+      <y>203</y>
+      <w>182</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>User
 --
@@ -214,14 +216,335 @@ password : varchar(32) {not null}
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>150</x>
-      <y>730</y>
-      <w>170</w>
-      <h>50</h>
+      <x>490</x>
+      <y>245</y>
+      <w>154</w>
+      <h>35</h>
     </coordinates>
-    <panel_attributes>lt=[stepNumber]&lt;-
+    <panel_attributes>lt=[stepNumber]-
 m2=1..*
 </panel_attributes>
-    <additional_attributes>40.0;20.0;150.0;20.0</additional_attributes>
+    <additional_attributes>50.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>469</x>
+      <y>322</y>
+      <w>70</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1..n
+produce &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>294</y>
+      <w>196</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+create &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>777</x>
+      <y>238</y>
+      <w>259</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>1092</x>
+      <y>336</y>
+      <w>112</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>{Disjointe;Partielle}
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>567</y>
+      <w>140</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>Cart
+--
+total: real
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>35</x>
+      <y>371</y>
+      <w>70</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=[cartNumber]-
+m1=1
+m2=1
+has v
+</panel_attributes>
+    <additional_attributes>40.0;10.0;40.0;280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>168</x>
+      <y>301</y>
+      <w>868</w>
+      <h>329</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+has &gt;</panel_attributes>
+    <additional_attributes>1220.0;10.0;750.0;10.0;750.0;440.0;10.0;440.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>133</x>
+      <y>364</y>
+      <w>49</w>
+      <h>217</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+buy v</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;290.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>413</y>
+      <w>140</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>order
+--
+total: real
+date: Date
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>133</x>
+      <y>434</y>
+      <w>105</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>210</x>
+      <y>350</y>
+      <w>182</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Pour q'un panier puisse être acheter, 
+il doit y avoir au minimum un élément 
+dedans
+bg=red</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>868</x>
+      <y>532</y>
+      <w>273</w>
+      <h>203</h>
+    </coordinates>
+    <panel_attributes>Point à voir :
+Les quantités :
+- est-ce qu'on les gère étape par étape ou bien dans
+la recette en entier ?
+
+- En ce qui concerne le stockage, comme actuellement
+ou bien tu aurais une autre proposition ?
+
+Comment gérer les cas des ingrédients créé par
+un utilisateur ?
+- considérer comme un ingrédient standard ?
+
+Comment différencier les ingrédients présents dans
+le shop et ceux qui y sont absent ?
+- àl'aide d'un boolean isBuyable ?
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>826</x>
+      <y>98</y>
+      <w>154</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Uses
+--
+Quantity: real {not null}
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>868</x>
+      <y>161</y>
+      <w>21</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>483</x>
+      <y>672</y>
+      <w>154</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Has
+--
+Quantity: real {not null}
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>539</x>
+      <y>602</y>
+      <w>21</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>287</x>
+      <y>490</y>
+      <w>210</w>
+      <h>245</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;320.0;280.0;320.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>189</x>
+      <y>749</y>
+      <w>252</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>Point à voir :
+comment gérer les produits achetés ?
+- Faire comme ci-dessus ou bien mettre une liaison 
+supplémentaire entre order et ingrédient ?
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>903</x>
+      <y>791</y>
+      <w>252</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>Point à voir :
+Pour ce qui est des recettes qu'un utilisateur suit
+actuellement, est-ce qu'on stocke dans la base de
+données ? ou bien tu te rends à la recette et il y a 
+juste un bouton, "commencer recette" ? 
+
+Et l'avancement d'une recette, comment gérer cela ?
+
+bg=blue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>175</x>
+      <y>245</y>
+      <w>196</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+begin &gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>217</x>
+      <y>140</y>
+      <w>21</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>168</x>
+      <y>63</y>
+      <w>161</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>inProgress
+--
+lastStepBeganHour: varchar{5}
+lastStepBeganDate: Date
+actualStep: integer
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
