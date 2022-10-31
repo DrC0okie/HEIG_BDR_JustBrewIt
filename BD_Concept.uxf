@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>11</zoom_level>
+  <zoom_level>3</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1474</x>
-      <y>242</y>
-      <w>209</w>
-      <h>176</h>
+      <x>426</x>
+      <y>732</y>
+      <w>57</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>ingredient
 --
@@ -16,8 +16,8 @@ name : varchar(32){not null}
 origin : varchar(16)
 sub-origin : varchar (16)
 specificity : text
-unity: varchar(10)
-pricePerUnity: real
+QuantityUnit: varchar(10)
+pricePerUnit: real
 
 </panel_attributes>
     <additional_attributes/>
@@ -25,10 +25,10 @@ pricePerUnity: real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>715</x>
-      <y>242</y>
-      <w>220</w>
-      <h>187</h>
+      <x>219</x>
+      <y>732</y>
+      <w>60</w>
+      <h>51</h>
     </coordinates>
     <panel_attributes>Recipe
 --
@@ -42,10 +42,10 @@ difficulty : integer{1-5}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>814</x>
-      <y>539</y>
-      <w>209</w>
-      <h>132</h>
+      <x>246</x>
+      <y>813</y>
+      <w>57</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>Beer
 --
@@ -61,16 +61,23 @@ bitterness : integer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1078</x>
-      <y>264</y>
-      <w>242</w>
-      <h>110</h>
+      <x>318</x>
+      <y>711</y>
+      <w>66</w>
+      <h>57</h>
     </coordinates>
     <panel_attributes>BrewingStep
 --
 stepName : varchar(32){not null}
 duration : real
 stepDescription : text
+category : enum{
+   preparation, beerMash,
+   mashOut, filtration,
+   densityMeasure, boiling,
+   cooling, primaryFermentation,
+   secondaryFermentation,
+   bottleing}
 
 </panel_attributes>
     <additional_attributes/>
@@ -78,10 +85,10 @@ stepDescription : text
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1056</x>
-      <y>539</y>
-      <w>286</w>
-      <h>121</h>
+      <x>312</x>
+      <y>813</y>
+      <w>78</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Malt
 --
@@ -96,10 +103,10 @@ cereal : enum{barley, wheat, rye, rice}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1386</x>
-      <y>539</y>
-      <w>110</w>
-      <h>55</h>
+      <x>393</x>
+      <y>813</y>
+      <w>30</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Water
 --
@@ -111,10 +118,10 @@ ph : real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1540</x>
-      <y>539</y>
-      <w>253</w>
-      <h>77</h>
+      <x>426</x>
+      <y>813</y>
+      <w>69</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Hopp
 --
@@ -129,10 +136,10 @@ alphaAcidRate : real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1815</x>
-      <y>539</y>
-      <w>242</w>
-      <h>143</h>
+      <x>498</x>
+      <y>813</y>
+      <w>66</w>
+      <h>33</h>
     </coordinates>
     <panel_attributes>Yeast
 --
@@ -147,32 +154,32 @@ fMinTemperature : integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1573</x>
-      <y>407</y>
-      <w>110</w>
-      <h>154</h>
+      <x>453</x>
+      <y>777</y>
+      <w>12</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;80.0;60.0;80.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;20.0;60.0;20.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1430</x>
-      <y>407</y>
-      <w>176</w>
-      <h>154</h>
+      <x>405</x>
+      <y>777</y>
+      <w>57</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>140.0;10.0;140.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
+    <additional_attributes>170.0;10.0;170.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1199</x>
-      <y>407</y>
-      <w>407</w>
-      <h>154</h>
+      <x>351</x>
+      <y>777</y>
+      <w>111</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>350.0;10.0;350.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
@@ -180,21 +187,21 @@ fMinTemperature : integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1573</x>
-      <y>407</y>
-      <w>396</w>
-      <h>154</h>
+      <x>453</x>
+      <y>777</y>
+      <w>87</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;340.0;60.0;340.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;270.0;60.0;270.0;120.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>154</x>
-      <y>231</y>
-      <w>286</w>
-      <h>264</h>
+      <x>66</x>
+      <y>729</y>
+      <w>78</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>User
 --
@@ -216,23 +223,23 @@ password : varchar(32) {not null}
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>924</x>
-      <y>297</y>
-      <w>176</w>
-      <h>55</h>
+      <x>279</x>
+      <y>747</y>
+      <w>45</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=[stepNumber]-
 m2=1..*
 </panel_attributes>
-    <additional_attributes>50.0;20.0;140.0;20.0</additional_attributes>
+    <additional_attributes>40.0;20.0;130.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>902</x>
-      <y>418</y>
-      <w>110</w>
-      <h>143</h>
+      <x>270</x>
+      <y>780</y>
+      <w>30</w>
+      <h>39</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -243,10 +250,10 @@ produce &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>429</x>
-      <y>374</y>
-      <w>308</w>
-      <h>55</h>
+      <x>141</x>
+      <y>768</y>
+      <w>84</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -257,10 +264,10 @@ create &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1309</x>
-      <y>286</y>
-      <w>187</w>
-      <h>55</h>
+      <x>381</x>
+      <y>744</y>
+      <w>51</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1..n
@@ -271,10 +278,10 @@ uses &gt;</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>1595</x>
-      <y>440</y>
-      <w>176</w>
-      <h>55</h>
+      <x>459</x>
+      <y>786</y>
+      <w>48</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>{Disjointe;Partielle}
 style=wordwrap</panel_attributes>
@@ -283,10 +290,10 @@ style=wordwrap</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>209</x>
-      <y>682</y>
-      <w>132</w>
-      <h>66</h>
+      <x>81</x>
+      <y>852</y>
+      <w>36</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>Cart
 --
@@ -298,10 +305,10 @@ total: real
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>209</x>
-      <y>495</y>
-      <w>110</w>
-      <h>209</h>
+      <x>81</x>
+      <y>801</y>
+      <w>30</w>
+      <h>57</h>
     </coordinates>
     <panel_attributes>lt=[cartNumber]-
 m2=1
@@ -312,10 +319,10 @@ has v
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>330</x>
-      <y>385</y>
-      <w>1166</w>
-      <h>363</h>
+      <x>114</x>
+      <y>771</y>
+      <w>318</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
@@ -326,10 +333,10 @@ has &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>308</x>
-      <y>484</y>
-      <w>77</w>
-      <h>220</h>
+      <x>108</x>
+      <y>798</y>
+      <w>21</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -340,10 +347,10 @@ buy v</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>374</x>
-      <y>561</y>
-      <w>121</w>
-      <h>77</h>
+      <x>126</x>
+      <y>819</y>
+      <w>33</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>order
 --
@@ -356,10 +363,10 @@ date: Date
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>308</x>
-      <y>605</y>
-      <w>88</w>
-      <h>33</h>
+      <x>108</x>
+      <y>831</y>
+      <w>24</w>
+      <h>9</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
@@ -367,10 +374,10 @@ date: Date
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>451</x>
-      <y>462</y>
-      <w>286</w>
-      <h>77</h>
+      <x>147</x>
+      <y>792</y>
+      <w>78</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>Pour q'un panier puisse être acheter, 
 il doit y avoir au minimum un élément 
@@ -381,10 +388,10 @@ bg=red</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1331</x>
-      <y>121</y>
-      <w>198</w>
-      <h>88</h>
+      <x>387</x>
+      <y>699</y>
+      <w>54</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>Uses
 --
@@ -396,10 +403,10 @@ Quantity: real {not null}
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1430</x>
-      <y>198</y>
-      <w>33</w>
-      <h>132</h>
+      <x>414</x>
+      <y>720</y>
+      <w>9</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
@@ -407,10 +414,10 @@ Quantity: real {not null}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>605</x>
-      <y>561</y>
-      <w>187</w>
-      <h>110</h>
+      <x>189</x>
+      <y>819</y>
+      <w>51</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>Has
 --
@@ -422,10 +429,10 @@ Quantity: real {not null}
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>484</x>
-      <y>594</y>
-      <w>143</w>
-      <h>55</h>
+      <x>156</x>
+      <y>828</y>
+      <w>39</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -436,10 +443,10 @@ has &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>429</x>
-      <y>297</y>
-      <w>308</w>
-      <h>55</h>
+      <x>141</x>
+      <y>747</y>
+      <w>84</w>
+      <h>15</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -450,10 +457,10 @@ begin &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>264</y>
-      <w>66</w>
-      <h>77</h>
+      <x>159</x>
+      <y>738</y>
+      <w>18</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;30.0;40.0;30.0;40.0;10.0</additional_attributes>
@@ -461,10 +468,10 @@ begin &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>451</x>
-      <y>187</y>
-      <w>187</w>
-      <h>88</h>
+      <x>147</x>
+      <y>717</y>
+      <w>51</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>inProgress
 --
@@ -476,10 +483,10 @@ stepNumber : integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
-      <y>660</y>
-      <w>33</w>
-      <h>77</h>
+      <x>213</x>
+      <y>846</y>
+      <w>9</w>
+      <h>21</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
