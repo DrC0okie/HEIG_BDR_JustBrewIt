@@ -1,3 +1,7 @@
+DROP SCHEMA IF EXISTS justBrewIt CASCADE;
+CREATE SCHEMA justBrewIt;
+SET search_path TO justBrewIt;
+
 CREATE TYPE sex as ENUM('ms', 'mr', 'none');
 
 CREATE TYPE category AS ENUM(
@@ -22,7 +26,7 @@ CREATE TYPE cereal AS ENUM(
 CREATE TYPE hop_type AS ENUM(
     'aromatic',
     'bittering',
-    'aromatic and bittering'
+    'mixt'
     );
 
 CREATE TYPE fermentation_type AS ENUM(
