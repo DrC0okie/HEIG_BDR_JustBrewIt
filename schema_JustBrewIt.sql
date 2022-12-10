@@ -1,12 +1,3 @@
-# HEIG_BDR_JustBrewIt
-
-## Creation du schema
-
-```sql
-DROP SCHEMA IF EXISTS justBrewIt CASCADE;
-CREATE SCHEMA justBrewIt;
-SET search_path TO justBrewIt;
-
 CREATE TYPE sex as ENUM('ms', 'mr', 'none');
 
 CREATE TYPE category AS ENUM(
@@ -30,7 +21,8 @@ CREATE TYPE cereal AS ENUM(
 
 CREATE TYPE hop_type AS ENUM(
     'aromatic',
-    'bittering'
+    'bittering',
+    'aromatic and bittering'
     );
 
 CREATE TYPE fermentation_type AS ENUM(
@@ -45,46 +37,41 @@ CREATE TYPE address AS (
     city_code varchar(16),
     city_name varchar(32));
 
+
 CREATE TABLE customer (
-    customer_id integer,
+    customer_id SERIAL PRIMARY KEY,
     first_name varchar(32) NOT NULL ,
     last_name varchar(32) NOT NULL ,
     sex sex NOT NULL DEFAULT 'none',
     address address NOT NULL ,
     e_mail_address varchar(32) UNIQUE NOT NULL,
-    password varchar(32) NOT NULL ,
-    PRIMARY KEY (customer_id));
+    password varchar(32) NOT NULL);
 
 CREATE TABLE beer(
-    beer_id integer,
+    beer_id SERIAL PRIMARY KEY,
     name varchar(32) NOT NULL,
     color integer,
     alcohol real,
-    bitterness integer,
-    PRIMARY KEY (beer_id)
-);
+    bitterness integer);
 
 CREATE TABLE recipe(
-    recipe_number integer,
+    recipe_number SERIAL PRIMARY KEY,
     name varchar(32) NOT NULL,
     difficulty integer CONSTRAINT diffRange CHECK ( difficulty > 0 AND difficulty < 6 ),
     creator_id_fk integer NOT NULL,
     beer_id_fk integer UNIQUE NOT NULL,
     quantity integer, --Association entity
     FOREIGN KEY (beer_id_fk) REFERENCES beer(beer_id),
-    FOREIGN KEY (creator_id_fk) REFERENCES customer(customer_id),
-    PRIMARY KEY (recipe_number));
+    FOREIGN KEY (creator_id_fk) REFERENCES customer(customer_id));
 
 CREATE TABLE ingredient(
-    ingredient_id integer,
+    ingredient_id SERIAL PRIMARY KEY,
     name varchar(32) NOT NULL ,
     origin varchar(32),
     sub_origin varchar(32),
     specificity text,
     quantity_unit varchar(8),
-    price_per_unit real,
-    PRIMARY KEY (ingredient_id)
-);
+    price_per_unit real);
 
 CREATE TABLE brewing_step(
     step_number integer NOT NULL,
@@ -118,14 +105,12 @@ CREATE TABLE progression(
 );
 
 CREATE TABLE "order"(
-    order_number integer,
+    order_number SERIAL PRIMARY KEY,
     total real NOT NULL,
     date date NOT NULL,
     ordered boolean NOT NULL,
     customerId_fk integer NOT NULL,
-    FOREIGN KEY (customerId_fk) REFERENCES customer(customer_id),
-    PRIMARY KEY (order_number)
-);
+    FOREIGN KEY (customerId_fk) REFERENCES customer(customer_id));
 
 CREATE TABLE ingredient_quantity(
     --Each order can have multiple ingredients, but each one must be unique
@@ -155,7 +140,8 @@ CREATE TABLE water(
 CREATE TABLE hop(
     ingredient_id_fk integer NOT NULL,
     type hop_type NOT NULL,
-    alpha_acid real,
+    low_alpha_acid real,
+    high_alpha_acid real,
     FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
 );
 
@@ -167,5 +153,3 @@ CREATE TABLE yeast(
     min_temperature integer,
     FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
 );
-
-```
