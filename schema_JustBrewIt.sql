@@ -1,7 +1,3 @@
-DROP SCHEMA IF EXISTS justBrewIt CASCADE;
-CREATE SCHEMA justBrewIt;
-SET search_path TO justBrewIt;
-
 CREATE TYPE sex as ENUM('ms', 'mr', 'none');
 
 CREATE TYPE category AS ENUM(
@@ -25,7 +21,8 @@ CREATE TYPE cereal AS ENUM(
 
 CREATE TYPE hop_type AS ENUM(
     'aromatic',
-    'bittering'
+    'bittering',
+    'aromatic and bittering'
     );
 
 CREATE TYPE fermentation_type AS ENUM(
@@ -143,7 +140,8 @@ CREATE TABLE water(
 CREATE TABLE hop(
     ingredient_id_fk integer NOT NULL,
     type hop_type NOT NULL,
-    alpha_acid real,
+    low_alpha_acid real,
+    high_alpha_acid real,
     FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
 );
 
