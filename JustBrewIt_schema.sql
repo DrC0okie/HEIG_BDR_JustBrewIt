@@ -26,7 +26,7 @@ CREATE TYPE cereal AS ENUM(
 CREATE TYPE hop_type AS ENUM(
     'aromatic',
     'bittering',
-    'mixt'
+    'mixed'
     );
 
 CREATE TYPE fermentation_type AS ENUM(
@@ -34,20 +34,16 @@ CREATE TYPE fermentation_type AS ENUM(
     'low'
     );
 
-CREATE TYPE address AS (
-    street varchar(32),
-    street_number varchar(32),
-    complement varchar(32),
-    city_code varchar(16),
-    city_name varchar(32));
-
-
 CREATE TABLE customer (
     customer_id SERIAL PRIMARY KEY,
     first_name varchar(32) NOT NULL ,
     last_name varchar(32) NOT NULL ,
     sex sex NOT NULL DEFAULT 'none',
-    address address NOT NULL ,
+    street varchar(32),
+    street_number varchar(32),
+    complement varchar(32),
+    city_code varchar(16),
+    city_name varchar(32),
     e_mail_address varchar(32) UNIQUE NOT NULL,
     password varchar(32) NOT NULL);
 
@@ -56,7 +52,10 @@ CREATE TABLE beer(
     name varchar(32) NOT NULL,
     color integer,
     alcohol real,
-    bitterness integer);
+    bitterness integer,
+    pre_boil_density real,
+    initial_density real,
+    final_density real);
 
 CREATE TABLE recipe(
     recipe_number SERIAL PRIMARY KEY,
