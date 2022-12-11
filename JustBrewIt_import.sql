@@ -1,4 +1,6 @@
 --Returns the primary key ID of the newly created ingredient
+SET search_path TO justBrewIt;
+
 CREATE OR REPLACE FUNCTION add_ingredient(i_name varchar(32), i_origin varchar(32), i_sub_origin varchar(32), i_specificity text,
 i_quantity_unit varchar(8), i_price_per_unit real)
     RETURNS integer
