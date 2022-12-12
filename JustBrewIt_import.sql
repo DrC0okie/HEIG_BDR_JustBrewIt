@@ -1,4 +1,4 @@
-SET search_path TO justBrewIt
+SET search_path TO justBrewIt;
 
 -- Hop insertion
 CALL add_hop('Bramling Cross', 'Angleterre', null, 'Herbacé, épicé, herbeux', 'gr', null, null, 'mixed', 5.0, 8.0);
