@@ -100,7 +100,7 @@ CREATE TABLE ingredient_usage(
 CREATE TABLE progression(
     begin_time timestamp,
     customer_id_fk integer,
-    step_number_fk integer,
+    step_number_fk integer DEFAULT 1,
     recipe_number_fk integer,
     FOREIGN KEY (customer_id_fk) REFERENCES customer(customer_id),
     FOREIGN KEY (step_number_fk, recipe_number_fk) REFERENCES brewing_step(step_number, recipe_number_fk),
@@ -131,12 +131,6 @@ CREATE TABLE malt(
     ebc_max integer NOT NULL,
     type varchar(32) NOT NULL,
     cereal cereal NOT NULL,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
-);
-
-CREATE TABLE water(
-    ingredient_id_fk integer NOT NULL,
-    ph real,
     FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
 );
 

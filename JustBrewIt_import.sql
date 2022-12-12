@@ -159,6 +159,7 @@ SELECT add_ingredient('Sucre de canne', null, null, null,'gr', null);
 SELECT add_ingredient('Miel', null, null, null,'gr', null);
 SELECT add_ingredient('Café', null, null, null,'gr', null);
 SELECT add_ingredient('Lait', null, null, null,'l', null);
+SELECT add_ingredient('Eau', null, null, null, 'l', null);
 
 INSERT INTO customer
 VALUES (DEFAULT, 'Timothée', 'Van Hove', 'mr', 'Les Sorbiers', '5', null, '1530', 'Payerne', 'timothee.vanhove@heig-vd.ch', '1234');
@@ -303,3 +304,9 @@ VALUES (1, 8, 74, 2);
 -- 7.5g sucre de canne / litre de bière obtenue étape 9
 INSERT INTO ingredient_usage
 VALUES (7.5, 9, 78, 2);
+
+INSERT INTO progression
+VALUES (now(), 1, DEFAULT, 1);
+
+INSERT INTO progression
+VALUES (now(), 1, DEFAULT, 2);
