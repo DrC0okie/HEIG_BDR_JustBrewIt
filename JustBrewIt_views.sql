@@ -1,6 +1,6 @@
 SET search_path TO justBrewIt;
 
-DROP VIEW ingredientsFromRecipes;
+DROP VIEW IF EXISTS ingredientsFromRecipes;
 
 CREATE OR REPLACE VIEW ingredientsFromRecipes AS
     SELECT r.recipe_number, bs.step_number, i.name, iu.quantity, i.quantity_unit
@@ -13,14 +13,14 @@ CREATE OR REPLACE VIEW ingredientsFromRecipes AS
         INNER JOIN ingredient i
             ON i.ingredient_id = iu.ingredient_id_fk;
 
-DROP VIEW recipesFromCustomers;
+DROP VIEW IF EXISTS recipesFromCustomers;
 
 CREATE OR REPLACE VIEW recipesFromCustomers AS
     SELECT customer_id, recipe_number
     FROM customer
         INNER JOIN recipe r ON customer.customer_id = r.creator_id_fk;
 
-DROP VIEW ordersFromCustomers;
+DROP VIEW IF EXISTS ordersFromCustomers;
 
 CREATE OR REPLACE VIEW ordersFromCustomers AS
     SELECT customer_id, o.order_number
@@ -28,7 +28,7 @@ CREATE OR REPLACE VIEW ordersFromCustomers AS
         INNER JOIN "order" o
             ON customer.customer_id = o.customerid_fk;
 
-DROP VIEW beersFromRecipes;
+DROP VIEW IF EXISTS beersFromRecipes;
 
 CREATE OR REPLACE VIEW beersFromRecipes AS
     SELECT recipe_number, b.name, b.color, b.alcohol, b.bitterness
@@ -36,7 +36,7 @@ CREATE OR REPLACE VIEW beersFromRecipes AS
             INNER JOIN beer b
                 ON b.beer_id = recipe.beer_id_fk;
 
-DROP VIEW ordersFromCustomers;
+DROP VIEW IF EXISTS ordersFromCustomers;
 
 CREATE OR REPLACE VIEW ordersFromCustomers AS
     SELECT customer_id, order_number, ordered, i.name, iq.quantity, i.quantity_unit

@@ -2,7 +2,7 @@ SET search_path TO justBrewIt;
 
 -- obtenir les ingrédients d'une recette donnée
 
-DROP FUNCTION getIngredientsFromRecipes;
+DROP FUNCTION IF EXISTS getIngredientsFromRecipes;
 
 CREATE OR REPLACE FUNCTION getIngredientsFromRecipes
 (
@@ -21,7 +21,7 @@ $$;
 
 -- obtenir les ingrédients d'une étape donnée
 
-DROP FUNCTION getIngredientsFromStep;
+DROP FUNCTION IF EXISTS getIngredientsFromStep;
 
 CREATE OR REPLACE FUNCTION getIngredientsFromStep
 (
@@ -42,7 +42,7 @@ $$;
 
 -- obtenir la bière issue d'une recette
 
-DROP FUNCTION getBeerFromRecipe;
+DROP FUNCTION IF EXISTS getBeerFromRecipe;
 
 CREATE OR REPLACE FUNCTION getBeerFromRecipe
 (
@@ -61,7 +61,7 @@ $$;
 
 -- obtenir le panier actuel d'un utilisateur
 
-DROP FUNCTION getCartFromCustomer;
+DROP FUNCTION IF EXISTS getCartFromCustomer;
 
 CREATE OR REPLACE FUNCTION getCartFromCustomer
 (
@@ -81,7 +81,7 @@ $$;
 
 
 -- obtenir les commandes d'un utilisateur
-DROP FUNCTION getOrdersFromCustomer;
+DROP FUNCTION IF EXISTS getOrdersFromCustomer;
 
 CREATE OR REPLACE FUNCTION getOrdersFromCustomer
 (
