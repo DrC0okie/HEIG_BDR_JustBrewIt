@@ -55,7 +55,7 @@ END; $$;
 -- Hop insertion
 
 CALL add_hop('Bramling Cross', 'Angleterre', null, 'Herbacé, épicé, herbeux', 'gr', null, 'mixed', 5.0, 8.0);
-CALL add_hop('Brewer\''s Gold', 'Angleterre', null, 'Épicé, fruité (cassis)', 'gr', null, 'mixed', 4.0, 9.0);
+CALL add_hop('Brewer''s Gold', 'Angleterre', null, 'Épicé, fruité (cassis)', 'gr', null, 'mixed', 4.0, 9.0);
 CALL add_hop('Challenger', 'Angleterre', null, 'Épicé, fruité', 'gr', null, 'mixed', 6.0, 9.0);
 CALL add_hop('East Kent Goldings', 'Angleterre', null, 'Terreux, agrumes', 'gr', null, 'aromatic', 4.0, 6.0);
 CALL add_hop('Fuggle', 'Angleterre', null, 'Herbacé, boisé, épicé', 'gr', null, 'aromatic', 3.5, 5.0);
@@ -125,7 +125,7 @@ CALL add_malt('Malt Barke Munich', null, null, 'Malté','kg', 17.0, 17, 22, 'Mun
 CALL add_yeast('SAFALE BE-256 (abbaye)', null, null, 'Fermente très rapidement et révèle des arômes subtils et bien équilibrés',
 'Sachet', 4.8, 'Abbaye / Belge', 'high', 15, 25);
 
-CALL add_yeast('SAFALE F-2', null, null, 'Se caractérise par un profil aromatique neutre qui respecte les caractéristiques de la bière de base.',
+CALL add_yeast('SAFALE F-2', null, null, 'Se caractérise par un profil aromatique neutre qui respecte les caractéristiques de la bière de base',
 'Sachet', 4.3, 'Refermentation', 'low', 15, 25);
 
 CALL add_yeast('SAFALE S-04', null, null, 'Excellentes propriétés de sédimentation, favorise une fermentation rapide',
@@ -137,13 +137,13 @@ CALL add_yeast('SAFLAGER S-23', null, null, 'Fournit des bières Pils fruitées 
 CALL add_yeast('SAFALE US-05', null, null, 'Pour des bières balancées avec peu de diacétyle et un après-goût pur et rafraîchissant',
 'Sachet', 3.4, 'Ale', 'high', 15, 24);
 
-CALL add_yeast('SAFALE T-58', null, null, 'Développe des arômes poivrés et épicés.',
+CALL add_yeast('SAFALE T-58', null, null, 'Développe des arômes poivrés et épicés',
 'Sachet', 2.7, 'Saison', 'high', 18, 24);
 
 CALL add_yeast('LalBrew Windsor', null, null, 'Levure de fermentation haute universelle fruitée',
 'Sachet', 4.5, 'Ale', 'high', 15, 25);
 
-CALL add_yeast('Bavarian Wheat M20', null, null, 'Sensation soyeuse en bouche et de délicieux arômes de banane et de clou de girofle.',
+CALL add_yeast('Bavarian Wheat M20', null, null, 'Sensation soyeuse en bouche et de délicieux arômes de banane et de clou de girofle',
 'Sachet', 3.2, 'Weizen', 'high', 18, 30);
 
 CALL add_yeast('Hophead Ale M66', null, null, 'Un mélange d''enzymes de levure qui renforce les arômes et les esters, parfait pour les NEIPA',
@@ -152,7 +152,7 @@ CALL add_yeast('Hophead Ale M66', null, null, 'Un mélange d''enzymes de levure 
 CALL add_yeast('Belgian Tripel M31', null, null, 'Offre une grande tolérance à l''alcool, ce qui la rend idéale pour un éventail de bières belges',
 'Sachet', 4.6, 'Abbaye / Belge', 'high', 18, 28);
 
-CALL add_yeast('New World Strong M42', null, null, 'Convient notamment aux Porters et Russian Imperial Stouts.',
+CALL add_yeast('New World Strong M42', null, null, 'Convient notamment aux Porters et Russian Imperial Stouts',
 'Sachet', 3.3, 'Porter / Stout', 'high', 16, 22);
 
 SELECT add_ingredient('Sucre de canne', null, null, null,'gr', null);
