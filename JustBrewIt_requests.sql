@@ -101,6 +101,25 @@ $$;
 
 -- obtenir prochaine étape
 
+DROP FUNCTION IF EXISTS getNextStep;
+
+CREATE OR REPLACE FUNCTION getNextStep
+(
+    recipeId integer,
+    stepNumber integer
+)
+RETURNS TABLE(recette integer, etape integer)
+language plpgsql
+AS
+$$
+    BEGIN
+    RETURN QUERY SELECT recipe_number, step_number
+        FROM stepsfromrecipe
+    WHERE recipe_number = recipeId
+    AND step_number = stepNumber + 1;
+    END;
+$$;
+
 -- obtenir les informations concernant une recette donnée
 
 -- obtenir les informations concernant une étape donnée

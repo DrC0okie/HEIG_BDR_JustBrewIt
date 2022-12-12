@@ -47,3 +47,11 @@ CREATE OR REPLACE VIEW ordersFromCustomers AS
             ON "order".order_number = iq.order_number_fk
         INNER JOIN ingredient i
             ON i.ingredient_id = iq.ingredient_id_fk;
+
+DROP VIEW IF EXISTS stepsFromRecipe;
+
+CREATE OR REPLACE VIEW stepsFromRecipe AS
+    SELECT recipe_number, step_number
+    FROM recipe
+        INNER JOIN brewing_step bs
+            ON recipe.recipe_number = bs.recipe_number_fk;
