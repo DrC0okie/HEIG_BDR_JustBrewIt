@@ -18,14 +18,14 @@ END; $$;
 
 -- adds a hop entity and it's linked ingredient
 CREATE OR REPLACE PROCEDURE add_hop(h_name varchar(32), h_origin varchar(32), h_sub_origin varchar(32), h_specificity text,
-h_quantity_unit varchar(8), h_price_per_unit real, h_type hop_type, h_low_alpha real, h_high_alpha real)
+h_quantity_unit varchar(8), h_price_per_unit real,h_substitution integer, h_type hop_type, h_low_alpha real, h_high_alpha real)
 LANGUAGE plpgsql
 AS $$
 DECLARE p_key integer;
 BEGIN
     p_key = add_ingredient(h_name, h_origin,h_sub_origin, h_specificity, h_quantity_unit, h_price_per_unit);
     INSERT INTO hop
-    VALUES(p_key, h_type, h_low_alpha, h_high_alpha);
+    VALUES(p_key, h_substitution, h_type, h_low_alpha, h_high_alpha);
 END; $$;
 
 -- adds a malt entity and it's linked ingredient
@@ -54,43 +54,43 @@ END; $$;
 
 -- Hop insertion
 
-CALL add_hop('Bramling Cross', 'Angleterre', null, 'Herbacé, épicé, herbeux', 'gr', null, 'mixed', 5.0, 8.0);
-CALL add_hop('Brewer''s Gold', 'Angleterre', null, 'Épicé, fruité (cassis)', 'gr', null, 'mixed', 4.0, 9.0);
-CALL add_hop('Challenger', 'Angleterre', null, 'Épicé, fruité', 'gr', null, 'mixed', 6.0, 9.0);
-CALL add_hop('East Kent Goldings', 'Angleterre', null, 'Terreux, agrumes', 'gr', null, 'aromatic', 4.0, 6.0);
-CALL add_hop('Fuggle', 'Angleterre', null, 'Herbacé, boisé, épicé', 'gr', null, 'aromatic', 3.5, 5.0);
-CALL add_hop('Goldings', 'Angleterre', null, 'Floral, herbacé, épicé', 'gr', null, 'aromatic', 4.0, 6.0);
-CALL add_hop('Northern Brewer', 'Angleterre', null, 'Agrumes, herbacé, boisé', 'gr', null, 'mixed', 7.0, 10.0);
-CALL add_hop('Pilgrim', 'Angleterre', null, 'Herbacé', 'gr', null, 'mixed', 9.0, 13.0);
-CALL add_hop('Target', 'Angleterre', null, 'Agrumes épicé', 'gr', null, 'mixed', 8.0, 13.0);
-CALL add_hop('Whitbread Golding', 'United Kingdoms', null, 'Boisé, herbacé, fruité', 'gr', null, 'mixed', 5.0, 8.0);
-CALL add_hop('Aurora', 'Slovénie', null, 'Floral, herbacé', 'gr', null, 'mixed', 6.0, 10.0);
-CALL add_hop('Hallertau', 'Allemagne', null, 'Floral, fruité (raisin)', 'gr', null, 'mixed', 9.0, 12.0);
-CALL add_hop('Hersbrucker', 'Allemagne', null, 'Fruité, floral, épicé', 'gr', null, 'aromatic', 2.0, 5.0);
-CALL add_hop('Marynka', 'Pologne', null, 'Herbacé, terreux', 'gr', null, 'mixed', 9.0, 12.0);
-CALL add_hop('Opal', 'Allemagne', null, 'Agrumes, épicé', 'gr', null, 'mixed', 5.0, 8.0);
-CALL add_hop('Pearl', 'Allemagne', null, 'Herbacé, épicé, fruité', 'gr', null, 'mixed', 6.0, 9.0);
-CALL add_hop('Saaz', 'Rép. Tchèque', null, 'Floral, fruité, herbacé', 'gr', null, 'aromatic', 2.0, 6.0);
-CALL add_hop('Saphir', 'Allemagne', null, 'Agrumes, fruité', 'gr', null, 'aromatic', 2.0, 5.0);
-CALL add_hop('Smaragd', 'Allemagne', null, 'Boisé, épicé, herbacé', 'gr', null, 'aromatic', 4.0, 6.0);
-CALL add_hop('Styrian Golding', 'Autriche', null, 'Épicé', 'gr', null, 'aromatic', 4.0, 6.0);
-CALL add_hop('Tettnanger', 'Allemagne', null, 'Épicé, herbacé', 'gr', null, 'aromatic', 3.0, 6.0);
-CALL add_hop('Aramis', 'France', null, 'Épicé, herbacé, agrumes', 'gr', null, 'mixed', 8.0, 8.5);
-CALL add_hop('Bouclier', 'France', null, 'Fruité, agrumes, herbacé', 'gr', null, 'mixed', 8.0, 9.0);
-CALL add_hop('Strisselspalt', 'France', null, 'Fruité (citron), épicé', 'gr', null, 'aromatic', 3.0, 5.0);
-CALL add_hop('Triskel', 'France', null, 'Fruité, floral, agrumes', 'gr', null, 'aromatic', 4.5, 7.0);
-CALL add_hop('Amarillo', 'USA', null, 'Floral, agrumes', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Cascade', 'USA', null, 'Agrumes, résineux', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Centennial', 'USA', null, 'Floral, agrumes', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Chinook', 'USA', null, 'Épicé, agrumes, résineux', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Colombus', 'USA', null, 'Herbacé, résineux, agrumes', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Galena', 'USA', null, 'Fruité (pêche), boisé, herbacé', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Nugget', 'USA', null, 'Herbacé, boisé, résineux', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Simcoe', 'USA', null, 'Fruité (abricot), herbacé, résineux', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Ahtanum', 'USA', null, 'Floral, agrumes, résineux', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Citra', 'USA', null, 'Fruité (pêche), agrumes', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Crystal', 'USA', null, 'Fruité (tropical), boisé, herbacé', 'gr', null, 'aromatic', 5.0, 8.0);
-CALL add_hop('Willamette', 'USA', null, 'Fruité, herbacé, épicé', 'gr', null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Bramling Cross', 'Angleterre', null, 'Herbacé, épicé, herbeux', 'gr', null, null, 'mixed', 5.0, 8.0);
+CALL add_hop('Brewer''s Gold', 'Angleterre', null, 'Épicé, fruité (cassis)', 'gr', null, null, 'mixed', 4.0, 9.0);
+CALL add_hop('Challenger', 'Angleterre', null, 'Épicé, fruité', 'gr', null, null, 'mixed', 6.0, 9.0);
+CALL add_hop('East Kent Goldings', 'Angleterre', null, 'Terreux, agrumes', 'gr', null, null, 'aromatic', 4.0, 6.0);
+CALL add_hop('Fuggle', 'Angleterre', null, 'Herbacé, boisé, épicé', 'gr', null, null, 'aromatic', 3.5, 5.0);
+CALL add_hop('Goldings', 'Angleterre', null, 'Floral, herbacé, épicé', 'gr', null, null, 'aromatic', 4.0, 6.0);
+CALL add_hop('Northern Brewer', 'Angleterre', null, 'Agrumes, herbacé, boisé', 'gr', null, null, 'mixed', 7.0, 10.0);
+CALL add_hop('Pilgrim', 'Angleterre', null, 'Herbacé', 'gr', null, null, 'mixed', 9.0, 13.0);
+CALL add_hop('Target', 'Angleterre', null, 'Agrumes épicé', 'gr', null, null, 'mixed', 8.0, 13.0);
+CALL add_hop('Whitbread Golding', 'United Kingdoms', null, 'Boisé, herbacé, fruité', 'gr', null, null, 'mixed', 5.0, 8.0);
+CALL add_hop('Aurora', 'Slovénie', null, 'Floral, herbacé', 'gr', null, null, 'mixed', 6.0, 10.0);
+CALL add_hop('Hallertau', 'Allemagne', null, 'Floral, fruité (raisin)', 'gr', null, null, 'mixed', 9.0, 12.0);
+CALL add_hop('Hersbrucker', 'Allemagne', null, 'Fruité, floral, épicé', 'gr', null, null, 'aromatic', 2.0, 5.0);
+CALL add_hop('Marynka', 'Pologne', null, 'Herbacé, terreux', 'gr', null, null, 'mixed', 9.0, 12.0);
+CALL add_hop('Opal', 'Allemagne', null, 'Agrumes, épicé', 'gr', null, null, 'mixed', 5.0, 8.0);
+CALL add_hop('Pearl', 'Allemagne', null, 'Herbacé, épicé, fruité', 'gr', null, null, 'mixed', 6.0, 9.0);
+CALL add_hop('Saaz', 'Rép. Tchèque', null, 'Floral, fruité, herbacé', 'gr', null, null, 'aromatic', 2.0, 6.0);
+CALL add_hop('Saphir', 'Allemagne', null, 'Agrumes, fruité', 'gr', null, null, 'aromatic', 2.0, 5.0);
+CALL add_hop('Smaragd', 'Allemagne', null, 'Boisé, épicé, herbacé', 'gr', null, null, 'aromatic', 4.0, 6.0);
+CALL add_hop('Styrian Golding', 'Autriche', null, 'Épicé', 'gr', null, null, 'aromatic', 4.0, 6.0);
+CALL add_hop('Tettnanger', 'Allemagne', null, 'Épicé, herbacé', 'gr', null, null, 'aromatic', 3.0, 6.0);
+CALL add_hop('Aramis', 'France', null, 'Épicé, herbacé, agrumes', 'gr', null, null, 'mixed', 8.0, 8.5);
+CALL add_hop('Bouclier', 'France', null, 'Fruité, agrumes, herbacé', 'gr', null, null, 'mixed', 8.0, 9.0);
+CALL add_hop('Strisselspalt', 'France', null, 'Fruité (citron), épicé', 'gr', null, null, 'aromatic', 3.0, 5.0);
+CALL add_hop('Triskel', 'France', null, 'Fruité, floral, agrumes', 'gr', null, null, 'aromatic', 4.5, 7.0);
+CALL add_hop('Amarillo', 'USA', null, 'Floral, agrumes', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Cascade', 'USA', null, 'Agrumes, résineux', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Centennial', 'USA', null, 'Floral, agrumes', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Chinook', 'USA', null, 'Épicé, agrumes, résineux', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Colombus', 'USA', null, 'Herbacé, résineux, agrumes', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Galena', 'USA', null, 'Fruité (pêche), boisé, herbacé', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Nugget', 'USA', null, 'Herbacé, boisé, résineux', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Simcoe', 'USA', null, 'Fruité (abricot), herbacé, résineux', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Ahtanum', 'USA', null, 'Floral, agrumes, résineux', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Citra', 'USA', null, 'Fruité (pêche), agrumes', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Crystal', 'USA', null, 'Fruité (tropical), boisé, herbacé', 'gr', null, null, 'aromatic', 5.0, 8.0);
+CALL add_hop('Willamette', 'USA', null, 'Fruité, herbacé, épicé', 'gr', null, null, 'aromatic', 5.0, 8.0);
 
 CALL add_malt('Malt Pilsner', null, null, 'Malté','kg', 15.5, 2, 3, 'Pilsen', 'barley');
 CALL add_malt('Malt Pilsner', null, null, 'Malté','kg', 15.5, 2, 4, 'Pilsen', 'barley');

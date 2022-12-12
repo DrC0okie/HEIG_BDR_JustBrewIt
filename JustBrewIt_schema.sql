@@ -131,15 +131,19 @@ CREATE TABLE malt(
     ebc_max integer NOT NULL,
     type varchar(32) NOT NULL,
     cereal cereal NOT NULL,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id),
+    PRIMARY KEY (ingredient_id_fk)
 );
 
 CREATE TABLE hop(
     ingredient_id_fk integer NOT NULL,
+    substitution_hop integer,
     type hop_type NOT NULL,
     low_alpha_acid real,
     high_alpha_acid real,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (substitution_hop) REFERENCES hop(ingredient_id_fk),
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id),
+    PRIMARY KEY (ingredient_id_fk)
 );
 
 CREATE TABLE yeast(
@@ -148,5 +152,6 @@ CREATE TABLE yeast(
     fermentation fermentation_type NOT NULL,
     max_temperature integer,
     min_temperature integer,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id),
+    PRIMARY KEY (ingredient_id_fk)
 );
