@@ -64,8 +64,8 @@ CREATE TABLE recipe(
     creator_id_fk integer NOT NULL,
     beer_id_fk integer UNIQUE NOT NULL,
     quantity integer, --Association entity
-    FOREIGN KEY (beer_id_fk) REFERENCES beer(beer_id),
-    FOREIGN KEY (creator_id_fk) REFERENCES customer(customer_id));
+    FOREIGN KEY (beer_id_fk) REFERENCES beer(beer_id) ON DELETE CASCADE,
+    FOREIGN KEY (creator_id_fk) REFERENCES customer(customer_id) ON DELETE CASCADE);
 
 CREATE TABLE ingredient(
     ingredient_id SERIAL PRIMARY KEY,
@@ -83,7 +83,7 @@ CREATE TABLE brewing_step(
     step_description text,
     category category NOT NULL,
     recipe_number_fk int NOT NULL,
-    FOREIGN KEY (recipe_number_fk) REFERENCES recipe(recipe_number),
+    FOREIGN KEY (recipe_number_fk) REFERENCES recipe(recipe_number) ON DELETE CASCADE,
     PRIMARY KEY (recipe_number_fk, step_number)
 );
 
@@ -92,8 +92,8 @@ CREATE TABLE ingredient_usage(
     step_number_fk integer NOT NULL,
     ingredient_id_fk integer,
     recipe_number_fk integer  NOT NULL,
-    FOREIGN KEY (step_number_fk, recipe_number_fk) REFERENCES brewing_step(step_number, recipe_number_fk),
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id),
+    FOREIGN KEY (step_number_fk, recipe_number_fk) REFERENCES brewing_step(step_number, recipe_number_fk) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
     PRIMARY KEY (step_number_fk, ingredient_id_fk, recipe_number_fk)
 );
 
@@ -102,8 +102,8 @@ CREATE TABLE progression(
     customer_id_fk integer,
     step_number_fk integer DEFAULT 1,
     recipe_number_fk integer,
-    FOREIGN KEY (customer_id_fk) REFERENCES customer(customer_id),
-    FOREIGN KEY (step_number_fk, recipe_number_fk) REFERENCES brewing_step(step_number, recipe_number_fk),
+    FOREIGN KEY (customer_id_fk) REFERENCES customer(customer_id) ON DELETE CASCADE,
+    FOREIGN KEY (step_number_fk, recipe_number_fk) REFERENCES brewing_step(step_number, recipe_number_fk) ON DELETE CASCADE,
     PRIMARY KEY (customer_id_fk, step_number_fk, recipe_number_fk)
 );
 
@@ -113,15 +113,15 @@ CREATE TABLE "order"(
     date date NOT NULL,
     ordered boolean NOT NULL,
     customerId_fk integer NOT NULL,
-    FOREIGN KEY (customerId_fk) REFERENCES customer(customer_id));
+    FOREIGN KEY (customerId_fk) REFERENCES customer(customer_id) ON DELETE CASCADE);
 
 CREATE TABLE ingredient_quantity(
     --Each order can have multiple ingredients, but each one must be unique
     quantity real,
     order_number_fk integer,
     ingredient_id_fk integer,
-    FOREIGN KEY (order_number_fk) REFERENCES "order"(order_number),
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id),
+    FOREIGN KEY (order_number_fk) REFERENCES "order"(order_number) ON DELETE CASCADE,
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
     PRIMARY KEY (order_number_fk, ingredient_id_fk)
 );
 
@@ -131,7 +131,7 @@ CREATE TABLE malt(
     ebc_max integer NOT NULL,
     type varchar(32) NOT NULL,
     cereal cereal NOT NULL,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE
 );
 
 CREATE TABLE hop(
@@ -139,7 +139,7 @@ CREATE TABLE hop(
     type hop_type NOT NULL,
     low_alpha_acid real,
     high_alpha_acid real,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE
 );
 
 CREATE TABLE yeast(
@@ -148,5 +148,5 @@ CREATE TABLE yeast(
     fermentation fermentation_type NOT NULL,
     max_temperature integer,
     min_temperature integer,
-    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id)
+    FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE
 );
