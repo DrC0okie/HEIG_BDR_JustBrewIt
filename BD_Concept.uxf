@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>960</x>
-      <y>216</y>
+      <y>200</y>
       <w>152</w>
       <h>128</h>
     </coordinates>
@@ -25,8 +25,8 @@ price_per_unit: real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>408</x>
-      <y>216</y>
+      <x>368</x>
+      <y>184</y>
       <w>160</w>
       <h>136</h>
     </coordinates>
@@ -42,8 +42,8 @@ difficulty : integer{1-5}
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>480</x>
-      <y>432</y>
+      <x>440</x>
+      <y>416</y>
       <w>152</w>
       <h>96</h>
     </coordinates>
@@ -62,7 +62,7 @@ bitterness : integer
     <id>UMLClass</id>
     <coordinates>
       <x>672</x>
-      <y>136</y>
+      <y>120</y>
       <w>176</w>
       <h>152</h>
     </coordinates>
@@ -84,9 +84,9 @@ category : enum{
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>712</x>
-      <y>432</y>
-      <w>208</w>
+      <x>904</x>
+      <y>416</y>
+      <w>224</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>malt
@@ -94,38 +94,23 @@ category : enum{
 ebc_min: integer {not null}
 ebc_max: integer {not null}
 type : varchar(32) {not null}
-cereal : enum{barley, wheat, rye, rice}
+cereal : enum{barley, wheat, rye, rice, corn}
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>936</x>
-      <y>432</y>
-      <w>80</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>water
---
-ph : real
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1024</x>
-      <y>432</y>
+      <x>712</x>
+      <y>416</y>
       <w>184</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>hopp
 --
 type : enum{aromatic, bittering}
-alpha_acid : real
-
+low_alpha_acid : real
+high_alpha_acid : real
 
 
 </panel_attributes>
@@ -134,8 +119,8 @@ alpha_acid : real
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1224</x>
-      <y>432</y>
+      <x>1136</x>
+      <y>416</y>
       <w>176</w>
       <h>88</h>
     </coordinates>
@@ -152,52 +137,41 @@ min_temperature : integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1032</x>
-      <y>336</y>
-      <w>96</w>
+      <x>792</x>
+      <y>320</y>
+      <w>264</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;100.0;60.0;100.0;120.0</additional_attributes>
+    <additional_attributes>310.0;10.0;310.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>968</x>
-      <y>336</y>
-      <w>88</w>
+      <x>1008</x>
+      <y>320</y>
+      <w>48</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>90.0;10.0;90.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>816</x>
-      <y>336</y>
-      <w>240</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>280.0;10.0;280.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
+    <additional_attributes>40.0;10.0;40.0;60.0;10.0;60.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>1032</x>
-      <y>336</y>
-      <w>304</w>
+      <y>320</y>
+      <w>216</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0;360.0;60.0;360.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;250.0;60.0;250.0;120.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>208</y>
+      <y>192</y>
       <w>208</w>
       <h>192</h>
     </coordinates>
@@ -221,49 +195,49 @@ password : varchar(32) {not null}
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>568</x>
-      <y>256</y>
-      <w>120</w>
+      <x>496</x>
+      <y>240</y>
+      <w>192</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=[stepNumber]-
 m2=1..*
 </panel_attributes>
-    <additional_attributes>40.0;20.0;130.0;20.0</additional_attributes>
+    <additional_attributes>40.0;20.0;220.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>544</x>
-      <y>344</y>
+      <x>504</x>
+      <y>312</y>
       <w>80</w>
-      <h>104</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=1
 produce &gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>200</x>
-      <y>312</y>
-      <w>224</w>
+      <y>280</y>
+      <w>184</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 m2=*
 create &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;260.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;210.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>840</x>
-      <y>248</y>
+      <y>232</y>
       <w>136</w>
       <h>40</h>
     </coordinates>
@@ -277,7 +251,7 @@ uses &gt;</panel_attributes>
     <id>Text</id>
     <coordinates>
       <x>1048</x>
-      <y>360</y>
+      <y>344</y>
       <w>128</w>
       <h>40</h>
     </coordinates>
@@ -289,7 +263,7 @@ style=wordwrap</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>856</x>
-      <y>128</y>
+      <y>112</y>
       <w>144</w>
       <h>64</h>
     </coordinates>
@@ -304,7 +278,7 @@ quantity: real {not null}
     <id>Relation</id>
     <coordinates>
       <x>928</x>
-      <y>184</y>
+      <y>168</y>
       <w>24</w>
       <h>96</h>
     </coordinates>
@@ -315,15 +289,15 @@ quantity: real {not null}
     <id>Relation</id>
     <coordinates>
       <x>200</x>
-      <y>152</y>
+      <y>136</y>
       <w>488</w>
-      <h>88</h>
+      <h>152</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2=*
 begin &gt;</panel_attributes>
-    <additional_attributes>10.0;80.0;60.0;80.0;60.0;20.0;590.0;20.0</additional_attributes>
+    <additional_attributes>10.0;160.0;60.0;160.0;60.0;20.0;590.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -331,10 +305,10 @@ begin &gt;</panel_attributes>
       <x>456</x>
       <y>104</y>
       <w>24</w>
-      <h>80</h>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -354,7 +328,7 @@ begin_time : Timestamp
     <id>UMLClass</id>
     <coordinates>
       <x>8</x>
-      <y>496</y>
+      <y>480</y>
       <w>96</w>
       <h>80</h>
     </coordinates>
@@ -371,7 +345,7 @@ boolean: ordered
     <id>Relation</id>
     <coordinates>
       <x>48</x>
-      <y>392</y>
+      <y>376</y>
       <w>64</w>
       <h>120</h>
     </coordinates>
@@ -385,21 +359,21 @@ make &gt;</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>96</x>
-      <y>320</y>
+      <y>304</y>
       <w>880</w>
       <h>256</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=*
 m2=*
-has &gt;</panel_attributes>
-    <additional_attributes>1080.0;10.0;750.0;10.0;750.0;290.0;10.0;290.0</additional_attributes>
+has ^</panel_attributes>
+    <additional_attributes>1080.0;10.0;660.0;10.0;660.0;290.0;10.0;290.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>296</x>
-      <y>472</y>
+      <x>208</x>
+      <y>448</y>
       <w>144</w>
       <h>64</h>
     </coordinates>
@@ -413,22 +387,22 @@ quantity: real {not null}
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>120</x>
-      <y>408</y>
-      <w>232</w>
-      <h>56</h>
+      <x>176</x>
+      <y>544</y>
+      <w>224</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Pour q'une commande puisse être acheté, 
 il doit y avoir au minimum un élément 
 dedans
-bg=red</panel_attributes>
+bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>376</x>
-      <y>360</y>
+      <x>320</x>
+      <y>344</y>
       <w>136</w>
       <h>64</h>
     </coordinates>
@@ -441,23 +415,35 @@ quantity: integer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>504</x>
-      <y>384</y>
-      <w>64</w>
+      <x>448</x>
+      <y>368</y>
+      <w>80</w>
       <h>24</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>528</y>
+      <x>272</x>
+      <y>504</y>
       <w>24</w>
-      <h>40</h>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>456</y>
+      <w>200</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=-
+            Substitution hop</panel_attributes>
+    <additional_attributes>80.0;10.0;30.0;10.0;30.0;110.0;230.0;110.0;230.0;60.0</additional_attributes>
   </element>
 </diagram>
