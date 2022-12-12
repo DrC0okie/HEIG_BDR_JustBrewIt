@@ -3,9 +3,16 @@ SET search_path TO justBrewIt;
 --Returns the primary key ID of the newly created ingredient
 SET search_path TO justBrewIt;
 
-CREATE OR REPLACE FUNCTION add_ingredient(i_name varchar(32), i_origin varchar(32), i_sub_origin varchar(32), i_specificity text,
-i_quantity_unit varchar(8), i_price_per_unit real)
-    RETURNS integer
+CREATE OR REPLACE FUNCTION add_ingredient
+    (
+    i_name varchar(32),
+    i_origin varchar(32),
+    i_sub_origin varchar(32),
+    i_specificity text,
+    i_quantity_unit varchar(8),
+    i_price_per_unit real
+    )
+RETURNS integer
 LANGUAGE plpgsql
 AS $$
 DECLARE p_key integer;
@@ -19,8 +26,19 @@ BEGIN
 END; $$;
 
 -- adds a hop entity and it's linked ingredient
-CREATE OR REPLACE PROCEDURE add_hop(h_name varchar(32), h_origin varchar(32), h_sub_origin varchar(32), h_specificity text,
-h_quantity_unit varchar(8), h_price_per_unit real,h_substitution integer, h_type hop_type, h_low_alpha real, h_high_alpha real)
+CREATE OR REPLACE PROCEDURE add_hop
+    (
+    h_name varchar(32),
+    h_origin varchar(32),
+    h_sub_origin varchar(32),
+    h_specificity text,
+    h_quantity_unit varchar(8),
+    h_price_per_unit real,
+    h_substitution integer,
+    h_type hop_type,
+    h_low_alpha real,
+    h_high_alpha real
+    )
 LANGUAGE plpgsql
 AS $$
 DECLARE p_key integer;
@@ -31,8 +49,19 @@ BEGIN
 END; $$;
 
 -- adds a malt entity and it's linked ingredient
-CREATE OR REPLACE PROCEDURE add_malt(m_name varchar(32), m_origin varchar(32), m_sub_origin varchar(32), m_specificity text,
-m_quantity_unit varchar(8), m_price_per_unit real, m_ebc_min integer, m_ebc_max integer, m_type varchar(32), m_cereal cereal)
+CREATE OR REPLACE PROCEDURE add_malt
+    (
+    m_name varchar(32),
+    m_origin varchar(32),
+    m_sub_origin varchar(32),
+    m_specificity text,
+    m_quantity_unit varchar(8),
+    m_price_per_unit real,
+    m_ebc_min integer,
+    m_ebc_max integer,
+    m_type varchar(32),
+    m_cereal cereal
+    )
 LANGUAGE plpgsql
 AS $$
 DECLARE p_key integer;
@@ -43,8 +72,19 @@ BEGIN
 END; $$;
 
 -- adds a yeast entity and it's linked ingredient
-CREATE OR REPLACE PROCEDURE add_yeast(y_name varchar(32), y_origin varchar(32), y_sub_origin varchar(32), y_specificity text,
-y_quantity_unit varchar(8), y_price_per_unit real, y_beer_type varchar(32), y_fermentation fermentation_type, y_min_temp integer, y_max_temp integer)
+CREATE OR REPLACE PROCEDURE add_yeast
+    (
+    y_name varchar(32),
+    y_origin varchar(32),
+    y_sub_origin varchar(32),
+    y_specificity text,
+    y_quantity_unit varchar(8),
+    y_price_per_unit real,
+    y_beer_type varchar(32),
+    y_fermentation fermentation_type,
+    y_min_temp integer,
+    y_max_temp integer
+    )
 LANGUAGE plpgsql
 AS $$
 DECLARE p_key integer;
@@ -53,7 +93,6 @@ BEGIN
     INSERT INTO yeast
     VALUES(p_key, y_beer_type, y_fermentation, y_max_temp, y_min_temp);
 END; $$;
-
 
 -- obtenir les ingrédients d'une recette donnée
 
