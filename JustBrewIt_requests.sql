@@ -343,7 +343,7 @@ $$
     END
 $$;
 
--- ajouter étape
+-- ajouter étape _> TODO 1 seule requête avec insert + select
 
 DROP FUNCTION IF EXISTS addStep;
 

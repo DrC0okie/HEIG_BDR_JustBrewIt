@@ -1,0 +1,28 @@
+version: '3.9'
+networks:
+  bdr-net:
+    driver: bridge
+services:
+  php-apache-environment:
+    build:
+        context: ./php_server
+    ports:
+      - "80"
+    networks:
+      - bdr-net
+  db:
+    image: 'bitnami/postgresql:14'
+    container_name: bdr-project-postgresql
+    environment:
+      - POSTGRESQL_USERNAME=bdr
+      - POSTGRESQL_PASSWORD=bdr
+      - POSTGRESQL_DATABASE=just_brew_it
+      - POSTGRESQL_POSTGRES_PASSWORD=root
+    ports:
+      - "5434:5432"
+    volumes:
+    #data is read only
+      - .:/data:ro
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bdr-net
