@@ -7,7 +7,7 @@ services:
     build:
         context: ./php_server
     ports:
-      - "80"
+      - "80:80"
     networks:
       - bdr-net
   db:
@@ -23,6 +23,6 @@ services:
     volumes:
     #data is read only
       - .:/data:ro
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgres:/docker-entrypoint-initdb.d
     networks:
       - bdr-net
