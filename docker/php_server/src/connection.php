@@ -1,6 +1,6 @@
 <?php
 
-$db_handle = pg_connect("host=localhost port=5434 dbname=just_brew_it user=bdr password=bdr");
+$db_handle = pg_connect("host=bdr-project-postgresql port=5432 dbname=just_brew_it user=bdr password=bdr");
 
 if ($db_handle) {
 
