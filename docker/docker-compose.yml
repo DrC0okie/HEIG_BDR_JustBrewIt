@@ -3,7 +3,8 @@ networks:
   bdr-net:
     driver: bridge
 services:
-  php-apache-environment:
+  php-server:
+    container_name: bdr-project-phpServer
     build:
         context: ./php_server
     ports:
