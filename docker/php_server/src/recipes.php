@@ -41,8 +41,4 @@
     </button>
 
 </main>
-<footer class="bg-white p-6">
-    <p class="text-center text-gray-600">Copyright © Mon site</p>
-</footer>
-</body>
-</html>
+<?php include './footer.php';?>
