@@ -15,10 +15,12 @@
 			
 			foreach ($recipes as $recipe) { ?>
 			<div class="card">
-			<h3 class="card-title"><?= $recipe['name'] ?></h3>
-			<p class="card-text">Difficulté: <?= $recipe['difficulty'] ?>/5</p>
-			<p class="card-text">Numero de recette: <?= $recipe['recipe_number'] ?></p>
-			<p class="card-text">Quantité: <?= $recipe['quantity'] ?>L</p>
+				<a href="recipe.php?recipe_number=<?= $recipe['recipe_number'] ?>">
+					<h3 class="card-title"><?= $recipe['name'] ?></h3>
+					<p class="card-text">Difficulté: <?= $recipe['difficulty'] ?>/5</p>
+					<p class="card-text">Numero de recette: <?= $recipe['recipe_number'] ?></p>
+					<p class="card-text">Quantité: <?= $recipe['quantity'] ?>L</p>
+				</a>
 			</div>
 	<?php }
 } else {
