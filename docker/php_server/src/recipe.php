@@ -143,7 +143,6 @@
 					<p class="card-text">Numéro étape: <?= $step['step_number'] ?></p>
 					<p class="card-text">Durée: <?= $step['duration'] ?> minutes</p>
 					<p class="card-text">Type d'étape: <?= $step['category'] ?></p>
-					<p class="card-text">Description: <?= $step['description'] ?></p>
 				</div>
 			<?php } ?>
 		</div>
