@@ -260,14 +260,62 @@ CREATE OR REPLACE FUNCTION getIngredientsFromRecipes
 (
     recipeId integer
 )
-RETURNS TABLE(nom varchar, quantite real, unite varchar)
+RETURNS TABLE(nom varchar, quantite real, unite varchar, description text, origine varchar, id integer)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT name, quantity, quantity_unit
+    RETURN QUERY SELECT name, quantity, quantity_unit, specificity, origin, ingredient_id
         FROM ingredientsfromrecipes
     WHERE recipe_number = recipeId;
+    END;
+$$;
+
+-- obtenir les houblons d'une recette donnée
+
+DROP FUNCTION IF EXISTS getHopsFromRecipes;
+
+CREATE OR REPLACE FUNCTION getHopsFromRecipes(recipeId integer)
+RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, type hop_type, low_alpha_acid real, high_alpha_acid real)
+language plpgsql
+AS
+$$
+    BEGIN
+    RETURN QUERY SELECT h.name, h.quantity, h.quantity_unit, h.specificity, h.origin, h.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
+        FROM hopsFromRecipes AS h
+    WHERE h.recipe_number = recipeId;
+    END;
+$$;
+
+-- obtenir les malts d'une recette donnée
+
+DROP FUNCTION IF EXISTS getMaltsFromRecipes;
+
+CREATE OR REPLACE FUNCTION getMaltsFromRecipes(recipeId integer)
+RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, ebc_min integer, ebc_max integer, type varchar, cereal cereal)
+language plpgsql
+AS
+$$
+    BEGIN
+    RETURN QUERY SELECT m.name, m.quantity, m.quantity_unit, m.specificity, m.origin, m.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
+        FROM maltsFromRecipes AS m
+    WHERE m.recipe_number = recipeId;
+    END;
+$$;
+
+-- obtenir les levures d'une recette donnée
+
+DROP FUNCTION IF EXISTS getYeastFromRecipes;
+
+CREATE OR REPLACE FUNCTION getYeastFromRecipes(recipeId integer)
+RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, beer_type varchar, fermentation fermentation_type, min_temperature integer, max_temperature integer)
+language plpgsql
+AS
+$$
+    BEGIN
+    RETURN QUERY SELECT y.name, y.quantity, y.quantity_unit, y.specificity, y.origin, y.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
+        FROM yeastFromRecipes AS y
+    WHERE y.recipe_number = recipeId;
     END;
 $$;
 
@@ -766,7 +814,7 @@ CREATE OR REPLACE TRIGGER update_begin_time_progression
 DROP VIEW IF EXISTS ingredientsFromRecipes;
 
 CREATE OR REPLACE VIEW ingredientsFromRecipes AS
-    SELECT r.recipe_number, bs.step_number, i.name, iu.quantity, i.quantity_unit, i.price_per_unit
+    SELECT r.recipe_number, bs.step_number, i.name, iu.quantity, i.quantity_unit, i.price_per_unit, i.specificity, i.origin, i.ingredient_id
     FROM recipe r
         INNER JOIN brewing_step bs
             ON r.recipe_number = bs.recipe_number_fk
@@ -775,6 +823,51 @@ CREATE OR REPLACE VIEW ingredientsFromRecipes AS
                    AND bs.recipe_number_fk = iu.recipe_number_fk
         INNER JOIN ingredient i
             ON i.ingredient_id = iu.ingredient_id_fk;
+			
+DROP VIEW IF EXISTS hopsFromRecipes;
+
+CREATE OR REPLACE VIEW hopsFromRecipes AS
+    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
+    FROM recipe r
+        INNER JOIN brewing_step bs
+            ON r.recipe_number = bs.recipe_number_fk
+        INNER JOIN ingredient_usage iu
+            ON bs.step_number = iu.step_number_fk
+                   AND bs.recipe_number_fk = iu.recipe_number_fk
+        INNER JOIN ingredient i
+            ON i.ingredient_id = iu.ingredient_id_fk
+		INNER JOIN hop h
+			ON h.ingredient_id_fk = i.ingredient_id;
+
+DROP VIEW IF EXISTS maltsFromRecipes;
+
+CREATE OR REPLACE VIEW maltsFromRecipes AS
+    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
+    FROM recipe r
+        INNER JOIN brewing_step bs
+            ON r.recipe_number = bs.recipe_number_fk
+        INNER JOIN ingredient_usage iu
+            ON bs.step_number = iu.step_number_fk
+                   AND bs.recipe_number_fk = iu.recipe_number_fk
+        INNER JOIN ingredient i
+            ON i.ingredient_id = iu.ingredient_id_fk
+		INNER JOIN malt m
+			ON m.ingredient_id_fk = i.ingredient_id;
+
+DROP VIEW IF EXISTS yeastFromRecipes;
+
+CREATE OR REPLACE VIEW yeastFromRecipes AS
+    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
+    FROM recipe r
+        INNER JOIN brewing_step bs
+            ON r.recipe_number = bs.recipe_number_fk
+        INNER JOIN ingredient_usage iu
+            ON bs.step_number = iu.step_number_fk
+                   AND bs.recipe_number_fk = iu.recipe_number_fk
+        INNER JOIN ingredient i
+            ON i.ingredient_id = iu.ingredient_id_fk
+		INNER JOIN yeast y
+			ON y.ingredient_id_fk = i.ingredient_id;
 			
 DROP VIEW IF EXISTS recipesFromCustomers;
 
