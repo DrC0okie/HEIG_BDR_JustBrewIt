@@ -5,15 +5,15 @@ SET search_path TO justBrewIt;
 CREATE TYPE sex as ENUM('ms', 'mr', 'none');
 
 CREATE TYPE category AS ENUM(
-    'preparation',
-    'beer_mash',
-    'mash_out',
-    'filtration',
-    'measure',
-    'boiling',
-    'cooling',
-    'fermentation',
-    'bottling');
+    'Préparation',
+    'Empâtage',
+    'Mash-out',
+    'Filtration',
+    'Mesure',
+    'Ébullition',
+    'Refroidissement',
+    'Fermentation',
+    'Embouteillage');
 
 CREATE TYPE cereal AS ENUM(
     'barley',
@@ -252,22 +252,22 @@ BEGIN
     VALUES(p_key, y_beer_type, y_fermentation, y_max_temp, y_min_temp);
 END; $$;
 
--- obtenir les ingrédients d'une recette donnée
+-- obtenir les ingrédients qui ne sont ni des malts, ni des levures, ni des houblons d'une recette donnée
 
-DROP FUNCTION IF EXISTS getIngredientsFromRecipes;
+DROP FUNCTION IF EXISTS getMiscIngredientsFromRecipe;
 
-CREATE OR REPLACE FUNCTION getIngredientsFromRecipes
+CREATE OR REPLACE FUNCTION getMiscIngredientsFromRecipe
 (
     recipeId integer
 )
-RETURNS TABLE(nom varchar, quantite real, unite varchar, description text, origine varchar, id integer)
+RETURNS TABLE(step_name varchar, name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT name, quantity, quantity_unit, specificity, origin, ingredient_id
-        FROM ingredientsfromrecipes
-    WHERE recipe_number = recipeId;
+    RETURN QUERY SELECT m.step_name, m.name, m.quantity, m.quantity_unit, m.specificity, m.origin, m.ingredient_id
+        FROM miscIngredientsFromRecipes AS m
+    WHERE m.recipe_number = recipeId;
     END;
 $$;
 
@@ -276,12 +276,12 @@ $$;
 DROP FUNCTION IF EXISTS getHopsFromRecipes;
 
 CREATE OR REPLACE FUNCTION getHopsFromRecipes(recipeId integer)
-RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, type hop_type, low_alpha_acid real, high_alpha_acid real)
+RETURNS TABLE(step_name varchar, name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, type hop_type, low_alpha_acid real, high_alpha_acid real)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT h.name, h.quantity, h.quantity_unit, h.specificity, h.origin, h.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
+    RETURN QUERY SELECT h.step_name, h.name, h.quantity, h.quantity_unit, h.specificity, h.origin, h.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
         FROM hopsFromRecipes AS h
     WHERE h.recipe_number = recipeId;
     END;
@@ -292,12 +292,12 @@ $$;
 DROP FUNCTION IF EXISTS getMaltsFromRecipes;
 
 CREATE OR REPLACE FUNCTION getMaltsFromRecipes(recipeId integer)
-RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, ebc_min integer, ebc_max integer, type varchar, cereal cereal)
+RETURNS TABLE(step_name varchar, name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, ebc_min integer, ebc_max integer, type varchar, cereal cereal)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT m.name, m.quantity, m.quantity_unit, m.specificity, m.origin, m.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
+    RETURN QUERY SELECT m.step_name, m.name, m.quantity, m.quantity_unit, m.specificity, m.origin, m.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
         FROM maltsFromRecipes AS m
     WHERE m.recipe_number = recipeId;
     END;
@@ -308,12 +308,12 @@ $$;
 DROP FUNCTION IF EXISTS getYeastFromRecipes;
 
 CREATE OR REPLACE FUNCTION getYeastFromRecipes(recipeId integer)
-RETURNS TABLE(name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, beer_type varchar, fermentation fermentation_type, min_temperature integer, max_temperature integer)
+RETURNS TABLE(step_name varchar, name varchar, quantity real, quantity_unit varchar, specificity text, origin varchar, ingredient_id integer, beer_type varchar, fermentation fermentation_type, min_temperature integer, max_temperature integer)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT y.name, y.quantity, y.quantity_unit, y.specificity, y.origin, y.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
+    RETURN QUERY SELECT y.step_name, y.name, y.quantity, y.quantity_unit, y.specificity, y.origin, y.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
         FROM yeastFromRecipes AS y
     WHERE y.recipe_number = recipeId;
     END;
@@ -506,6 +506,22 @@ $$
     RETURN pri;
     END;
 $$;
+
+-- obtenir toutes les étapes d'une recette
+DROP FUNCTION IF EXISTS getStepsFromRecipe;
+
+CREATE OR REPLACE FUNCTION getStepsFromRecipe(recipeId integer)
+RETURNS TABLE(step_number integer, step_name varchar, description text, duration real, category category)
+language plpgsql
+AS
+$$
+    BEGIN
+    RETURN QUERY SELECT s.step_number, s.step_name, s.step_description, s.duration, s.category
+        FROM stepsFromRecipe s
+    WHERE s.recipe_number = recipeId;
+    END;
+$$;
+
 
 -- obtenir les informations concernant une étape
 DROP FUNCTION IF EXISTS getStepInfo;
@@ -814,7 +830,7 @@ CREATE OR REPLACE TRIGGER update_begin_time_progression
 DROP VIEW IF EXISTS ingredientsFromRecipes;
 
 CREATE OR REPLACE VIEW ingredientsFromRecipes AS
-    SELECT r.recipe_number, bs.step_number, i.name, iu.quantity, i.quantity_unit, i.price_per_unit, i.specificity, i.origin, i.ingredient_id
+    SELECT r.recipe_number, bs.step_name, i.name, iu.quantity, i.quantity_unit, i.price_per_unit, i.specificity, i.origin, i.ingredient_id
     FROM recipe r
         INNER JOIN brewing_step bs
             ON r.recipe_number = bs.recipe_number_fk
@@ -824,50 +840,42 @@ CREATE OR REPLACE VIEW ingredientsFromRecipes AS
         INNER JOIN ingredient i
             ON i.ingredient_id = iu.ingredient_id_fk;
 			
+	
 DROP VIEW IF EXISTS hopsFromRecipes;
 
 CREATE OR REPLACE VIEW hopsFromRecipes AS
-    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
-    FROM recipe r
-        INNER JOIN brewing_step bs
-            ON r.recipe_number = bs.recipe_number_fk
-        INNER JOIN ingredient_usage iu
-            ON bs.step_number = iu.step_number_fk
-                   AND bs.recipe_number_fk = iu.recipe_number_fk
-        INNER JOIN ingredient i
-            ON i.ingredient_id = iu.ingredient_id_fk
+    SELECT i.recipe_number, i.step_name, i.name, i.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, h.type, h.low_alpha_acid, h.high_alpha_acid
+    FROM ingredientsFromRecipes i
 		INNER JOIN hop h
 			ON h.ingredient_id_fk = i.ingredient_id;
 
 DROP VIEW IF EXISTS maltsFromRecipes;
 
 CREATE OR REPLACE VIEW maltsFromRecipes AS
-    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
-    FROM recipe r
-        INNER JOIN brewing_step bs
-            ON r.recipe_number = bs.recipe_number_fk
-        INNER JOIN ingredient_usage iu
-            ON bs.step_number = iu.step_number_fk
-                   AND bs.recipe_number_fk = iu.recipe_number_fk
-        INNER JOIN ingredient i
-            ON i.ingredient_id = iu.ingredient_id_fk
+    SELECT i.recipe_number, i.step_name, i.name, i.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, m.ebc_min, m.ebc_max, m.type, m.cereal
+    FROM ingredientsFromRecipes i
 		INNER JOIN malt m
 			ON m.ingredient_id_fk = i.ingredient_id;
 
 DROP VIEW IF EXISTS yeastFromRecipes;
 
 CREATE OR REPLACE VIEW yeastFromRecipes AS
-    SELECT r.recipe_number, i.name, iu.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
-    FROM recipe r
-        INNER JOIN brewing_step bs
-            ON r.recipe_number = bs.recipe_number_fk
-        INNER JOIN ingredient_usage iu
-            ON bs.step_number = iu.step_number_fk
-                   AND bs.recipe_number_fk = iu.recipe_number_fk
-        INNER JOIN ingredient i
-            ON i.ingredient_id = iu.ingredient_id_fk
+    SELECT i.recipe_number, i.step_name, i.name, i.quantity, i.quantity_unit, i.specificity, i.origin, i.ingredient_id, y.beer_type, y.fermentation, y.min_temperature, y.max_temperature
+    FROM ingredientsFromRecipes i
 		INNER JOIN yeast y
 			ON y.ingredient_id_fk = i.ingredient_id;
+			
+DROP VIEW IF EXISTS miscIngredientsFromRecipes;
+
+CREATE OR REPLACE VIEW miscIngredientsFromRecipes AS
+    SELECT * FROM ingredientsFromRecipes i
+	WHERE i.ingredient_id NOT IN(
+	SELECT ingredient_id FROM yeastFromRecipes
+    UNION
+    SELECT ingredient_id FROM hopsFromRecipes
+    UNION
+    SELECT ingredient_id FROM maltsFromRecipes
+	);
 			
 DROP VIEW IF EXISTS recipesFromCustomers;
 
@@ -907,10 +915,10 @@ CREATE OR REPLACE VIEW ordersFromCustomers AS
 DROP VIEW IF EXISTS stepsFromRecipe;
 
 CREATE OR REPLACE VIEW stepsFromRecipe AS
-    SELECT recipe_number, step_number, duration
-    FROM recipe
+    SELECT r.recipe_number, bs.step_number, bs.duration, bs.step_name, bs.step_description, bs.category
+    FROM recipe r
         INNER JOIN brewing_step bs
-            ON recipe.recipe_number = bs.recipe_number_fk;
+            ON r.recipe_number = bs.recipe_number_fk;
 	
 -- import data
 -- Hop insertion
@@ -952,35 +960,35 @@ CALL add_hop('Citra', 'USA', null, 'Fruité (pêche), agrumes', 'gr', null, null
 CALL add_hop('Crystal', 'USA', null, 'Fruité (tropical), boisé, herbacé', 'gr', null, null, 'aromatic', 5.0, 8.0);
 CALL add_hop('Willamette', 'USA', null, 'Fruité, herbacé, épicé', 'gr', null, null, 'aromatic', 5.0, 8.0);
 
-CALL add_malt('Malt Pilsner', null, null, 'Malté','kg', 15.5, 2, 3, 'Pilsen', 'barley');
-CALL add_malt('Malt Pilsner', null, null, 'Malté','kg', 15.5, 2, 4, 'Pilsen', 'barley');
-CALL add_malt('Malt Pale Ale', null, null, 'Malté','kg', 15.0, 5, 7, 'Pale Ale', 'barley');
-CALL add_malt('Malt Vienne', null, null, 'Malté','kg', 15.4, 6, 9, 'Vienne', 'barley');
-CALL add_malt('Malt Munich', null, null, 'Malté','kg', 15.3, 12, 17, 'Munich', 'barley');
-CALL add_malt('Malt Munich', null, null, 'Malté','kg', 15.2, 20, 25, 'Munich', 'barley');
-CALL add_malt('Malt Acidulé', null, null, 'Malté','kg', 17.9, 3, 6, 'Acidulé', 'barley');
-CALL add_malt('Malt Mélanoïdé', null, null, 'Malté','kg', 15.5, 60, 80, 'Spécial', 'barley');
-CALL add_malt('Malt de blé', null, null, 'Malté','kg', 15.9, 100, 140, 'Blé', 'wheat');
-CALL add_malt('Malt Carapils', null, null, 'Malté','kg', 15.5, 25, 65, 'Pilsen', 'barley');
-CALL add_malt('Malt Carahell', null, null, 'Malté','kg', 15.6, 20, 30, 'Pilsen', 'barley');
-CALL add_malt('Malt Carared', null, null, 'Malté','kg', 16.1, 40, 60, 'Roux', 'barley');
-CALL add_malt('Malt Caraamber', null, null, 'Malté','kg', 15.5, 60, 80, 'Ambré', 'barley');
-CALL add_malt('Malt Caramunich', null, null, 'Malté','kg', 15.2, 80, 100, 'Munich', 'barley');
-CALL add_malt('Malt Caramunich', null, null, 'Malté','kg', 15.5, 110, 130, 'Munich', 'barley');
-CALL add_malt('Malt Caramunich', null, null, 'Malté','kg', 15.7, 140, 160, 'Munich', 'barley');
-CALL add_malt('Malt Caraaroma', null, null, 'Malté','kg', 15.8, 350, 450, 'Spécial', 'barley');
-CALL add_malt('Malt Carabelge', null, null, 'Malté','kg', 15.8, 30, 35, 'Belge', 'barley');
-CALL add_malt('Malt caramélisé', null, null, 'Malté','kg', 15.8, 170, 220, 'Caramel', 'barley');
-CALL add_malt('Malt Pilsner Bohème', null, null, 'Malté','kg', 15.5, 3, 4, 'Pilsen / Bohème', 'barley');
-CALL add_malt('Malt de Bohème', null, null, 'Malté','kg', 15.8, 3, 5, 'Bohème', 'barley');
-CALL add_malt('Malt d''abbaye', null, null, 'Malté','kg', 15.6, 40, 50, 'Belge', 'barley');
-CALL add_malt('Malt torréfié', null, null, 'Malté','kg', 19.0, 1100, 1200, 'Torréfié / Chocolat', 'barley');
-CALL add_malt('Malt torréfié', null, null, 'Malté','kg', 18.5, 1300, 1500, 'Torréfié / Chocolat', 'barley');
-CALL add_malt('Malt de seigle torréfié', null, null, 'Malté','kg', 19.5, 500, 800, 'Seigle / Torréfié', 'barley');
-CALL add_malt('Malt d''épeautre torréfié', null, null, 'Malté','kg', 41.0, 450, 650, 'Epeautre / Torréfié', 'barley');
-CALL add_malt('Malt spécial W', null, null, 'Malté','kg', 20.0, 280, 320, 'Spécial', 'barley');
-CALL add_malt('Malt Barke vienne', null, null, 'Malté','kg', 18.5, 6, 9, 'Vienne', 'barley');
-CALL add_malt('Malt Barke Munich', null, null, 'Malté','kg', 17.0, 17, 22, 'Munich', 'barley');
+CALL add_malt('Pilsner', null, null, 'Bières de type Pilsner, pils aux couleurs extra claires et toutes les lager, ale demandant une base de malt pale','kg', 15.5, 2, 3, 'Pilsen', 'barley');
+CALL add_malt('Pilsner', null, null, 'Bières de type Pilsen et tout autre type de bière lager, ale','kg', 15.5, 2, 4, 'Pilsen', 'barley');
+CALL add_malt('Pale Ale', null, null, 'Approprié pour toutes les bières Ale, Stout, Porter','kg', 15.0, 5, 7, 'Pale Ale', 'barley');
+CALL add_malt('Vienne', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières de type Octobre','kg', 15.4, 6, 9, 'Vienne', 'barley');
+CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.3, 12, 17, 'Munich', 'barley');
+CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.2, 20, 25, 'Munich', 'barley');
+CALL add_malt('Acidulé', null, null, 'Bières type Pilsen, bières légères, bières pression, bières blanches','kg', 17.9, 3, 6, 'Acidulé', 'barley');
+CALL add_malt('Mélanoïdé', null, null, 'Bières blanches, bières Bock, bières brunes, bières rousses, bières ambrées','kg', 15.5, 60, 80, 'Spécial', 'barley');
+CALL add_malt('de blé', null, null, 'Bières haute fermentation, bières sombres','kg', 15.9, 100, 140, 'Blé', 'wheat');
+CALL add_malt('Carapils', null, null, 'Bières type Pilsen, bières sans alcool, bières légères, lager','kg', 15.5, 25, 65, 'Pilsen', 'barley');
+CALL add_malt('Carahell', null, null, 'Bières blondes, type « Export », bières de fête, boissons maltées','kg', 15.6, 20, 30, 'Pilsen', 'barley');
+CALL add_malt('Carared', null, null, 'Bières brunes, bières Bock, bières ambrées, bières Alt, bières blanches, Red Ales, Scottish Ales','kg', 16.1, 40, 60, 'Roux', 'barley');
+CALL add_malt('Caraamber', null, null, 'Bières Bock, bières brunes, bières rousses, bières ambrées, Amber Lagers, Amber Ales','kg', 15.5, 60, 80, 'Ambré', 'barley');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.2, 80, 100, 'Munich', 'barley');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.5, 110, 130, 'Munich', 'barley');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.7, 140, 160, 'Munich', 'barley');
+CALL add_malt('Caraaroma', null, null, 'Bières brunes, bières Bock, bières ambrées, bières de garde brunes, Dark Ales, Stouts, Porters','kg', 15.8, 350, 450, 'Spécial', 'barley');
+CALL add_malt('Carabelge', null, null, 'Bières spéciales belges, bières blondes belges, Bruin belges, bières ambrées belges, Triple, Dubbel','kg', 15.8, 30, 35, 'Belge', 'barley');
+CALL add_malt('caramélisé', null, null, 'Lager de Bohème, Bock de Bohème, bières spéciales de Bohème, Porter, Stout, Ale','kg', 15.8, 170, 220, 'Caramel', 'barley');
+CALL add_malt('Pilsner Bohème', null, null, 'Bières type Pilsen, tout autre type de bière','kg', 15.5, 3, 4, 'Pilsen / Bohème', 'barley');
+CALL add_malt('de Bohème', null, null, 'Bières type Pilsen selon la méthode de Bohème, Bières européennes de basse fermentation','kg', 15.8, 3, 5, 'Bohème', 'barley');
+CALL add_malt('d''abbaye', null, null, 'Bières d’abbaye traditionnelles, bières trappistes, bières spéciales belges, bières blondes belges, Bruin belges','kg', 15.6, 40, 50, 'Belge', 'barley');
+CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 19.0, 1100, 1200, 'Torréfié / Chocolat', 'barley');
+CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 18.5, 1300, 1500, 'Torréfié / Chocolat', 'barley');
+CALL add_malt('de seigle torréfié', null, null, 'Bières spéciales de haute fermentation','kg', 19.5, 500, 800, 'Seigle / Torréfié', 'barley');
+CALL add_malt('d''épeautre torréfié', null, null, 'Bières à plusieurs grains, produits de boulangerie','kg', 41.0, 450, 650, 'Epeautre / Torréfié', 'barley');
+CALL add_malt('spécial W', null, null, 'Bruin belges, bières belges ambrées, bières spéciales belges, bières blondes belges, bières ambrées belges','kg', 20.0, 280, 320, 'Spécial', 'barley');
+CALL add_malt('Barke vienne', null, null, 'Bavarian dunkel, bières de fêtes, pale ale, IPA, stout, lager','kg', 18.5, 6, 9, 'Vienne', 'barley');
+CALL add_malt('Barke Munich', null, null, 'Bières de fêtes, bières bock, bières sombres, stout, bières Münich','kg', 17.0, 17, 22, 'Munich', 'barley');
 
 CALL add_yeast('SAFALE BE-256 (abbaye)', null, null, 'Fermente très rapidement et révèle des arômes subtils et bien équilibrés',
 'Sachet', 4.8, 'Abbaye / Belge', 'high', 15, 25);

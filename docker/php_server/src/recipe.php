@@ -32,10 +32,6 @@
 		if (isset($_GET['recipe_number'])) {
     $recipeNumber = $_GET['recipe_number'];
 
-    $query = $db->prepare("SELECT * FROM getIngredientsFromRecipes(?)");
-    $query->execute([$recipeNumber]);
-    $ingredients = $query->fetchAll();
-
     $query = $db->prepare("SELECT * FROM getBeerFromRecipe(?)");
     $query->execute([$recipeNumber]);
     $beer = $query->fetch();
@@ -50,8 +46,25 @@
 	
 	$query = $db->prepare("SELECT * FROM getYeastFromRecipes(?)");
     $query->execute([$recipeNumber]);
-    $yeasts = $query->fetchAll();?>
+    $yeasts = $query->fetchAll();
 	
+	$query = $db->prepare("SELECT * FROM getMiscIngredientsFromRecipe(?)");
+    $query->execute([$recipeNumber]);
+    $ingredients = $query->fetchAll();
+	
+	$query = $db->prepare("SELECT * FROM getStepsFromRecipe(?)");
+    $query->execute([$recipeNumber]);
+    $steps = $query->fetchAll();
+	?>
+
+			<h2 class="text-lg font-medium"><a href="./index.php">Bière produite</a></h2>
+			<div class="beerCard">
+				<h3 class="card-title"><?= $beer['nom'] ?></h3>
+				<p class="card-text">Alcool: <?= $beer['alcool'] ?>%</p>
+				<p class="card-text">Amertume: <?= $beer['amertume'] ?> IBU</p>
+				<p class="card-text">Couleur: <?= $beer['couleur'] ?> EBC</p>
+			</div>
+
 	<div class="card">
 		<h2 class="text-lg font-medium"><a href="./index.php">Houblons</a></h2>
 		<div class="card-grid">
@@ -59,6 +72,7 @@
 				?>
 				<div class="hopsCard">
 					<h3 class="card-title"><?= $hop['name'] ?></h3>
+					<p class="card-text">Étape: <?= $hop['step_name'] ?></p>
 					<p class="card-text">Quantité: <?= $hop['quantity'] ?><?= $hop['quantity_unit'] ?></p>
 					<p class="card-text">Origine: <?= $hop['origin'] ?></p>
 					<p class="card-text">Type: <?= $hop['type'] ?></p>
@@ -75,6 +89,7 @@
 				?>
 				<div class="maltsCard">
 					<h3 class="card-title"><?= $malt['name'] ?></h3>
+					<p class="card-text">Étape: <?= $malt['step_name'] ?></p>
 					<p class="card-text">Quantité: <?= $malt['quantity'] ?><?= $malt['quantity_unit'] ?></p>
 					<p class="card-text">Origine: <?= $malt['origin'] ?></p>
 					<p class="card-text">Type: <?= $malt['type'] ?></p>
@@ -92,6 +107,7 @@
 				?>
 				<div class="yeastsCard">
 					<h3 class="card-title"><?= $yeast['name'] ?></h3>
+					<p class="card-text">Étape: <?= $yeast['step_name'] ?></p>
 					<p class="card-text">Quantité: <?= $yeast['quantity'] ?><?= $yeast['quantity_unit'] ?></p>
 					<p class="card-text">Origine: <?= $yeast['origin'] ?></p>
 					<p class="card-text">Type de bière: <?= $yeast['beer_type'] ?></p>
@@ -102,16 +118,37 @@
 			<?php } ?>
 		</div>
 	</div>
-	<h2 class="text-lg font-medium"><a href="./index.php">Bière produite</a></h2>
-	<div class="card-grid">
-		<div class="card">
-			<h3 class="card-title"><?= $beer['nom'] ?></h3>
-			<p class="card-text">Alcool: <?= $beer['alcool'] ?>%</p>
-			<p class="card-text">Amertume: <?= $beer['amertume'] ?> IBU</p>
-			<p class="card-text">Couleur: <?= $beer['couleur'] ?> EBC</p>
+	<div class="card">
+		<h2 class="text-lg font-medium"><a href="./index.php">Autres ingrédients</a></h2>
+		<div class="card-grid">
+			<?foreach ($ingredients as $ingredient) { 
+				?>
+				<div class="miscCard">
+					<h3 class="card-title"><?= $ingredient['name'] ?></h3>
+					<p class="card-text">Étape: <?= $ingredient['step_name'] ?></p>
+					<p class="card-text">Quantité: <?= $ingredient['quantity'] ?><?= $ingredient['quantity_unit'] ?></p>
+					<p class="card-text">Origine: <?= $ingredient['origin'] ?></p>
+					<p class="card-text">Description: <?= $ingredient['specificity'] ?></p>
+				</div>
+			<?php } ?>
 		</div>
-
-		<?php } else {
+	</div>
+	<div class="card">
+		<h2 class="text-lg font-medium"><a href="./index.php">Étapes de brassage</a></h2>
+		<div class="card-grid">
+			<?foreach ($steps as $step) { 
+				?>
+				<div class="stepCard">
+					<h3 class="card-title"><?= $step['step_name'] ?></h3>
+					<p class="card-text">Numéro étape: <?= $step['step_number'] ?></p>
+					<p class="card-text">Durée: <?= $step['duration'] ?> minutes</p>
+					<p class="card-text">Type d'étape: <?= $step['category'] ?></p>
+					<p class="card-text">Description: <?= $step['description'] ?></p>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+	<?php } else {
 			header("Location: recipes.php");
 		}
 	?>

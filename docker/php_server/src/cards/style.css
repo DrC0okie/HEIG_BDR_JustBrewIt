@@ -11,7 +11,7 @@
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
-	border: 2px solid #7a7a7a;
+	border: 2px solid #919191;
 }
 .maltsCard {
     background: #fffcd2;
@@ -19,7 +19,7 @@
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
-	border: 2px solid #7a7a7a;
+	border: 2px solid #919191;
 }
 .yeastsCard {
     background: #d7fffb;
@@ -27,7 +27,33 @@
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
     box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
-	border: 2px solid #7a7a7a;
+	border: 2px solid #919191;
+}
+.miscCard {
+    background: #f0d1ea;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
+	border: 2px solid #919191;
+}
+.beerCard {
+	font-size: 18px;
+	text-align: center;
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
+	border: 2px solid #919191;
+}
+.stepCard {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3);
+	border: 2px solid #919191;
 }
 .card-grid {
   display: grid;
