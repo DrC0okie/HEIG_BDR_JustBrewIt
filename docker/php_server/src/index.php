@@ -6,6 +6,7 @@ session_start();
   <head>
     <title>Just Brew It!</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+      <link rel="icon" type="image/x-icon" href="./favicon.ico">
   </head>
   <body class="bg-gray-200">
     <header class="bg-white p-6">
