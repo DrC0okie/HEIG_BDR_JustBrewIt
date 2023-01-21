@@ -22,9 +22,17 @@
 			</div>
 	<?php }
 } else {
-    header("Location: login.php");
+            echo "<script>window.location = './login.php'</script>";
 }
 	?>
+
+    <button
+            class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
+            onclick="window.location.href='./createRecipe.php'"
+    >
+        Ajouter une recette
+    </button>
+
 </main>
 <footer class="bg-white p-6">
     <p class="text-center text-gray-600">Copyright © Mon site</p>
