@@ -23,7 +23,13 @@ try {
         <ul class="flex">
             <li><a href="./index.php" class="px-4 py-2 text-gray-800 hover:text-indigo-500">Accueil</a></li>
             <li><a href="./recipes.php" class="px-4 py-2 text-gray-800 hover:text-indigo-500">Recettes</a></li>
-            <li><a href="./login.php" class="px-4 py-2 text-gray-800 hover:text-indigo-500">Login</a></li>
+            <?php
+            if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+                echo '<li><a href="./logout.php" class="px-4 py-2 text-gray-800 hover:text-indigo-500">Logout</a></li>';
+            } else {
+                echo '<li><a href="./login.php" class="px-4 py-2 text-gray-800 hover:text-indigo-500">Login</a></li>';
+            }
+            ?>
         </ul>
     </nav>
 </header>
