@@ -393,6 +393,29 @@ $$
     END;
 $$;
 
+
+-- Obtenir le userId à partir de l'adresse email
+CREATE OR REPLACE FUNCTION get_customer_id_by_email(email varchar(32))
+RETURNS integer
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN (SELECT customer_id FROM customer WHERE e_mail_address = email);
+END; $$;
+
+-- obtenir les recettes liées à un utilisateur
+CREATE OR REPLACE FUNCTION get_recipe_info_by_customer_id(c_id integer)
+RETURNS TABLE (recipe_number integer, name varchar(32), difficulty integer, creator_id_fk integer, beer_id_fk integer, quantity integer)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY SELECT r.recipe_number, r.name, r.difficulty, r.creator_id_fk, r.beer_id_fk, r.quantity 
+		FROM recipe AS r 
+	WHERE r.creator_id_fk = c_id;
+END; $$;
+
+
+
 -- obtenir les informations concernant une recette donnée
 DROP FUNCTION IF EXISTS getRecipeInfo;
 

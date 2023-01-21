@@ -1,8 +1,20 @@
+<?php
+session_start();
+
+try {
+    $db = new PDO("pgsql:host=bdr-project-postgresql;dbname=just_brew_it", "bdr", "bdr");
+    $db->exec("SET search_path TO justbrewit");
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    die();
+}
+?>
 <!DOCTYPE html>
 <html lang="FR">
 <head>
     <title>Just Brew It!</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+	<link rel="stylesheet" href="cards/style.css">
 </head>
 <body class="bg-gray-200">
 <header class="bg-white p-6">
@@ -16,8 +28,31 @@
     </nav>
 </header>
 <main class="p-6">
-    <h2 class="text-2xl font-medium mb-4">Bienvenue sur mon site</h2>
-    <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, magna eget tincidunt bibendum, augue est molestie diam, at auctor magna massa ut augue.</p>
+    <?php
+		if(isset($_SESSION['username'])){
+			$email = $_SESSION['username'];
+
+			$query = $db->prepare("SELECT get_customer_id_by_email(:email);");
+			$query->bindParam(':email', $email);
+			$query->execute();
+			$customerId = $query->fetchColumn();
+
+			$query = $db->prepare("SELECT * FROM get_recipe_info_by_customer_id(?)");
+			$query->execute([$customerId]);
+			$recipes = $query->fetchAll();
+			
+			foreach ($recipes as $recipe) { ?>
+			<div class="card">
+			<h3 class="card-title"><?= $recipe['name'] ?></h3>
+			<p class="card-text">Difficulté: <?= $recipe['difficulty'] ?>/5</p>
+			<p class="card-text">Numero de recette: <?= $recipe['recipe_number'] ?></p>
+			<p class="card-text">Quantité: <?= $recipe['quantity'] ?>L</p>
+			</div>
+	<?php }
+} else {
+    header("Location: login.php");
+}
+	?>
 </main>
 <footer class="bg-white p-6">
     <p class="text-center text-gray-600">Copyright © Mon site</p>
