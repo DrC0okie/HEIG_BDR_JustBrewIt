@@ -193,7 +193,6 @@ if(isset($_SESSION['username'])){
                             name="step-${actualStepNb}-category"
                             required
                     >
-                        <option value="option">Option 1</option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -222,26 +221,24 @@ if(isset($_SESSION['username'])){
                 </div>
             `;
 
-            let options = "test";
-
             const xhr = new XMLHttpRequest();
 
-            xhr.open('GET', 'getStepCategory.php', true);
-
-            xhr.onload = function () {
-                const categories = JSON.parse(this.responseText);
-                console.log(categories);
-                if (this.status === 200) {
+            xhr.onreadystatechange = function () {
+                let options = "";
+                if (this.readyState === 4 && this.status === 200) {
                     const categories = JSON.parse(this.responseText);
-                    console.log(categories);
-                    options+= categories[0];
                     categories.forEach(category => {
-                        options += `<option value="${category}">${category}</option>`;
+                        options += `<option value="${category[0]}">${category[0]}</option>`;
                     });
+                    document.getElementById(`step-${actualStepNb}-category`).innerHTML = options;
                 }
             };
 
-            newStep.innerHTML = newStep.innerHTML.replace(`<option value="option">Option 1</option>`, options);
+            xhr.open('GET', 'getStepCategory.php', true);
+
+            xhr.send();
+
+
 
             container.appendChild(newStep);
         }
