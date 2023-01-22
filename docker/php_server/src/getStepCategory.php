@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-type: text/plain; charset=utf-8');
 
 try {
     $db = new PDO("pgsql:host=bdr-project-postgresql;dbname=just_brew_it", "bdr", "bdr");
@@ -11,10 +12,10 @@ try {
 }
 
 if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-    $query = $db->prepare("SELECT enum_range(NULL::category) as category");
+    $query = $db->prepare("SELECT unnest(enum_range(NULL::category)) as category");
     $query->execute();
     $stepCategories = $query->fetchAll();
-    echo json_encode($stepCategories);
+    echo json_encode($stepCategories, JSON_UNESCAPED_UNICODE);
 } else {
     header("Location: login.php");
 }
