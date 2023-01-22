@@ -209,6 +209,18 @@ if(isset($_SESSION['username'])){
                     >
                 </div>
                 <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">
+                        Ingrédients de l'étape ${actualStepNb} :
+                    </label>
+                <div class="mb-4" id="step-${actualStepNb}-ingredients">
+                </div>
+                <button type="button" onclick="addIngredient(${actualStepNb})" class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600">
+                    Ajouter un ingrédient existant
+                </button>
+                <button type="button" onclick="addNewIngredient(${actualStepNb})" class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600">
+                    Ajouter un nouvel ingrédient
+                </button>
+                <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-duration">
                         Description de l'étape ${actualStepNb} :
                     </label>
@@ -238,9 +250,137 @@ if(isset($_SESSION['username'])){
 
             xhr.send();
 
-
-
             container.appendChild(newStep);
+        }
+
+        function addIngredient(stepNb) {
+
+            const container = document.getElementById("step-"+ stepNb +"-ingredients");
+            const newIngredient = document.createElement("div");
+            let actualIngredientNb = container.childElementCount + 1;
+
+            newIngredient.innerHTML = `
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}">
+                        Nom de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <select
+                            class="form-select py-2 px-3 block w-full leading-5appearance-none bg-white border border-gray-400 text-gray-700 py-2 px-3 pr-8 focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}"
+                            required
+                    >
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-quantity">
+                        Quantité de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="number"
+                            min="0"
+                            step="0.1"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-quantity"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-quantity"
+                            required
+                    >
+                </div>
+            `;
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                let options = "";
+                if (this.readyState === 4 && this.status === 200) {
+                    const ingredients = JSON.parse(this.responseText);
+                    ingredients.forEach(ingredient => {
+                        options += `<option value="${ingredient[0]}">${ingredient[0]} [${ingredient[1]}]</option>`;
+                    });
+                    document.getElementById(`step-${stepNb}-ingredient-${actualIngredientNb}`).innerHTML = options;
+                }
+            };
+
+            xhr.open('GET', 'getIngredients.php', true);
+
+            xhr.send();
+
+            container.appendChild(newIngredient);
+        }
+
+        function addNewIngredient(stepNb) {
+
+            const container = document.getElementById("step-"+ stepNb +"-ingredients");
+            const newIngredient = document.createElement("div");
+            let actualIngredientNb = container.childElementCount + 1;
+
+            newIngredient.innerHTML = `
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-name">
+                        Nom de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="text"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-name"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-name"
+                            required
+                    >
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-quantity">
+                        Quantité de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="number"
+                            min="0"
+                            step="0.1"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-quantity"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-quantity"
+                            required
+                    >
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-unity">
+                        Unité de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="text"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-unity"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-unity"
+                            required
+                    >
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-origin">
+                        Origine de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="text"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-origin"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-origin"
+                            required
+                    >
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-specificity">
+                        Spécificité de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
+                    </label>
+                    <input
+                            class="border border-gray-400 p-2 w-full"
+                            type="text"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}-specificity"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}-specificity"
+                            required
+                    >
+                </div>
+            `;
+
+            container.appendChild(newIngredient);
         }
     </script>
 </main>
