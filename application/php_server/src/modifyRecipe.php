@@ -93,7 +93,7 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-2" for="beer-number">
-                    Nombre de bières :
+                    Quantité de bière[l] :
                 </label>
                 <input
                         class="border border-gray-400 p-2 w-full"
@@ -162,6 +162,7 @@
                         class="border border-gray-400 p-2 w-full"
                         type="number"
                         min="0"
+						step = "0.001"
                         id="beer-pre-density"
                         name="beer-pre-density"
                         value="<?php echo $beer['pre_boil_density'] ?>"
@@ -176,6 +177,7 @@
                         class="border border-gray-400 p-2 w-full"
                         type="number"
                         min="0"
+						step = "0.001"
                         id="beer-ini-density"
                         name="beer-ini-density"
                         value="<?php echo $beer['initial_density'] ?>"
@@ -190,6 +192,7 @@
                         class="border border-gray-400 p-2 w-full"
                         type="number"
                         min="0"
+						step = "0.001"
                         id="beer-final-density"
                         name="beer-final-density"
                         value="<?php echo $beer['final_density'] ?>"
