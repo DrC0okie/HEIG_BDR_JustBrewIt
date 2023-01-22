@@ -155,8 +155,8 @@ CREATE TABLE yeast(
     FOREIGN KEY (ingredient_id_fk) REFERENCES ingredient(ingredient_id) ON DELETE CASCADE,
     PRIMARY KEY (ingredient_id_fk)
 );
-			
--- Create requests 
+
+-- Create requests
 
 --Returns the primary key ID of the newly created ingredient
 SET search_path TO justBrewIt;
@@ -457,8 +457,8 @@ RETURNS TABLE (recipe_number integer, name varchar(32), difficulty integer, crea
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    RETURN QUERY SELECT r.recipe_number, r.name, r.difficulty, r.creator_id_fk, r.beer_id_fk, r.quantity 
-		FROM recipe AS r 
+    RETURN QUERY SELECT r.recipe_number, r.name, r.difficulty, r.creator_id_fk, r.beer_id_fk, r.quantity
+		FROM recipe AS r
 	WHERE r.creator_id_fk = c_id;
 END; $$;
 
@@ -515,8 +515,8 @@ AS
 $$
     BEGIN
     RETURN QUERY SELECT s.step_number, s.step_name, s.step_description, s.duration, s.category,
-			(SELECT COUNT(*) 
-				FROM brewing_step 
+			(SELECT COUNT(*)
+				FROM brewing_step
 			WHERE recipe_number_fk = recipeId) AS step_count
         FROM stepsFromRecipe s
     WHERE s.recipe_number = recipeId;
@@ -819,7 +819,7 @@ CREATE OR REPLACE TRIGGER update_begin_time_progression
     AFTER UPDATE ON progression
     FOR EACH ROW
     EXECUTE PROCEDURE updateBeginTimeProgression();
-	
+
 --Create views
 DROP VIEW IF EXISTS ingredientsFromRecipes;
 
@@ -833,8 +833,8 @@ CREATE OR REPLACE VIEW ingredientsFromRecipes AS
                    AND bs.recipe_number_fk = iu.recipe_number_fk
         INNER JOIN ingredient i
             ON i.ingredient_id = iu.ingredient_id_fk;
-			
-	
+
+
 DROP VIEW IF EXISTS hopsFromRecipes;
 
 CREATE OR REPLACE VIEW hopsFromRecipes AS
@@ -858,7 +858,7 @@ CREATE OR REPLACE VIEW yeastFromRecipes AS
     FROM ingredientsFromRecipes i
 		INNER JOIN yeast y
 			ON y.ingredient_id_fk = i.ingredient_id;
-			
+
 DROP VIEW IF EXISTS miscIngredientsFromRecipes;
 
 CREATE OR REPLACE VIEW miscIngredientsFromRecipes AS
@@ -870,7 +870,7 @@ CREATE OR REPLACE VIEW miscIngredientsFromRecipes AS
     UNION
     SELECT ingredient_id FROM maltsFromRecipes
 	);
-			
+
 DROP VIEW IF EXISTS recipesFromCustomers;
 
 CREATE OR REPLACE VIEW recipesFromCustomers AS
@@ -911,7 +911,7 @@ CREATE OR REPLACE VIEW stepsFromRecipe AS
     FROM recipe r
         INNER JOIN brewing_step bs
             ON r.recipe_number = bs.recipe_number_fk;
-	
+
 -- import data
 -- Hop insertion
 CALL add_hop('Bramling Cross', 'Angleterre', null, 'Herbacé, épicé, herbeux', 'gr', null, null, 'mixed', 5.0, 8.0);
@@ -1027,17 +1027,32 @@ VALUES (DEFAULT, 'Timothée', 'Van Hove', 'mr', 'Les Sorbiers', '5', null, '1530
 INSERT INTO customer
 VALUES (DEFAULT, 'Thomas', 'Germano', 'mr', 'Rue des Germano', '0', null, '0000', 'Somewhere', 'thomas.germano@heig-vd.ch', '1234');
 
+INSERT INTO customer
+VALUES (DEFAULT, 'admin', 'admin', 'none', 'Rue des admins', '0', null, '0000', 'Adminland', 'admin', 'admin');
+
 INSERT INTO beer
 VALUES(DEFAULT, 'Frida la brune', 42, 7.7, 38, 1.07, 1.075, 1.022);
 
 INSERT INTO beer
 VALUES(DEFAULT, 'Brigit la blanche', 8, 5.5, 15, 1.05, 1.054, 1.012);
 
+INSERT INTO beer
+VALUES(DEFAULT, 'La rousse de l''admin', 42, 7.7, 38, 1.07, 1.075, 1.022);
+
+INSERT INTO beer
+VALUES(DEFAULT, 'La blonde de l''admin', 8, 5.5, 15, 1.05, 1.054, 1.012);
+
 INSERT INTO recipe
 VALUES(DEFAULT, 'Frida la Brune', 3, 1, 1, 20);
 
 INSERT INTO recipe
 VALUES(DEFAULT, 'Brigit la blanche', 3, 2, 2, 20);
+
+INSERT INTO recipe
+VALUES(DEFAULT, 'La rousse de l''admin', 3, 3, 3, 20);
+
+INSERT INTO recipe
+VALUES(DEFAULT, 'La blonde de l''admin', 3, 3, 4, 20);
 
 INSERT INTO brewing_step
 VALUES(1, 'Préparation', 0, '', 'Préparation', 1);
@@ -1093,6 +1108,60 @@ VALUES(8, 'Fermentation', 120, '', 'Fermentation', 2);
 INSERT INTO brewing_step
 VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 2);
 
+INSERT INTO brewing_step
+VALUES(1, 'Préparation', 0, '', 'Préparation', 3);
+
+INSERT INTO brewing_step
+VALUES(2, 'Empâtage', 60, '', 'Empâtage', 3);
+
+INSERT INTO brewing_step
+VALUES(3, 'Mash-out', 15, '', 'Mash-out', 3);
+
+INSERT INTO brewing_step
+VALUES(4, 'Filatration des drêches', 0, '', 'Filtration', 3);
+
+INSERT INTO brewing_step
+VALUES(5, 'Mesure de la densité', 0, '', 'Mesure', 3);
+
+INSERT INTO brewing_step
+VALUES(6, 'Ébullition', 60, '', 'Ébullition', 3);
+
+INSERT INTO brewing_step
+VALUES(7, 'Refroidissement', 0, '', 'Refroidissement', 3);
+
+INSERT INTO brewing_step
+VALUES(8, 'Fermentation', 120, '', 'Fermentation', 3);
+
+INSERT INTO brewing_step
+VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 3);
+
+INSERT INTO brewing_step
+VALUES(1, 'Préparation', 0, '', 'Préparation', 4);
+
+INSERT INTO brewing_step
+VALUES(2, 'Empâtage', 60, '', 'Empâtage', 4);
+
+INSERT INTO brewing_step
+VALUES(3, 'Mash-out', 15, '', 'Mash-out', 4);
+
+INSERT INTO brewing_step
+VALUES(4, 'Filatration des drêches', 0, '', 'Filtration', 4);
+
+INSERT INTO brewing_step
+VALUES(5, 'Mesure de la densité', 0, '', 'Mesure', 4);
+
+INSERT INTO brewing_step
+VALUES(6, 'Ébullition', 60, '', 'Ébullition', 4);
+
+INSERT INTO brewing_step
+VALUES(7, 'Refroidissement', 0, '', 'Refroidissement', 4);
+
+INSERT INTO brewing_step
+VALUES(8, 'Fermentation', 120, '', 'Fermentation', 4);
+
+INSERT INTO brewing_step
+VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 4);
+
 -- Recette 1 (Frida la brune)
 -- 4kg Malt pilsner / étape 2
 INSERT INTO ingredient_usage
@@ -1134,8 +1203,7 @@ VALUES (1, 8, 67, 1);
 INSERT INTO ingredient_usage
 VALUES (8.5, 9, 78, 1);
 
-
--- Recette 1 (Brigit la blanche)
+-- Recette 2 (Brigit la blanche)
 -- 2kg Malt pilsner / étape 2
 INSERT INTO ingredient_usage
 VALUES (2.0, 2, 38, 2);
@@ -1163,6 +1231,76 @@ VALUES (1, 8, 74, 2);
 -- 7.5g sucre de canne / litre de bière obtenue étape 9
 INSERT INTO ingredient_usage
 VALUES (7.5, 9, 78, 2);
+
+-- Recette 3 La rousse de l'admin
+-- 4kg Malt pilsner / étape 2
+INSERT INTO ingredient_usage
+VALUES (4.0, 2, 38, 3);
+
+-- 1kg Malt carapils / étape 2
+INSERT INTO ingredient_usage
+VALUES (1.0, 2, 47, 3);
+
+-- 1kg Malt carared / étape 2
+INSERT INTO ingredient_usage
+VALUES (1.0, 2, 49, 3);
+
+-- 0.5 kg Malt Spécial / étape 2
+INSERT INTO ingredient_usage
+VALUES (0.5, 2, 64, 3);
+
+-- 150g sucre de canne étape 2
+INSERT INTO ingredient_usage
+VALUES (150.0, 2, 78, 3);
+
+-- 30g Target étape 6
+INSERT INTO ingredient_usage
+VALUES (30.0, 6, 9, 3);
+
+-- 25g Brewer's Gold étape 6
+INSERT INTO ingredient_usage
+VALUES (25.0, 6, 2, 3);
+
+-- 25g Saaz étape 6
+INSERT INTO ingredient_usage
+VALUES (25.0, 6, 17, 3);
+
+-- Levure BE-256 étape 8
+INSERT INTO ingredient_usage
+VALUES (1, 8, 67, 3);
+
+-- 8.5g sucre de canne / litre de bière obtenue étape 9
+INSERT INTO ingredient_usage
+VALUES (8.5, 9, 78, 3);
+
+-- Recette 4 La brune de l'admin
+-- 2kg Malt pilsner / étape 2
+INSERT INTO ingredient_usage
+VALUES (2.0, 2, 38, 4);
+
+-- 2kg malt de blé / étape 2
+INSERT INTO ingredient_usage
+VALUES (2.0, 2, 46, 4);
+
+-- 200g sucre de canne étape 2
+INSERT INTO ingredient_usage
+VALUES (200.0, 2, 78, 4);
+
+-- 30g houblon Pearl étape 6
+INSERT INTO ingredient_usage
+VALUES (30.0, 6, 16, 4);
+
+-- 20g houblon Opal étape 6
+INSERT INTO ingredient_usage
+VALUES (20.0, 6, 15, 4);
+
+-- 1 sachet de levure Bavarian Wheat étape 8
+INSERT INTO ingredient_usage
+VALUES (1, 8, 74, 4);
+
+-- 7.5g sucre de canne / litre de bière obtenue étape 9
+INSERT INTO ingredient_usage
+VALUES (7.5, 9, 78, 4);
 
 INSERT INTO progression
 VALUES (now(), 1, DEFAULT, 1);
