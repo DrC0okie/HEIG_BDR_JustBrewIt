@@ -2,33 +2,37 @@
 
 		
 <main class="p-6">
-
 	<?php
 		if (isset($_GET['recipe_number'])&& isset($_SESSION['username'])) {
+			//Récupération des informations de la source
 			$recipeNumber = $_GET['recipe_number'];
 			$stepNumber = $_GET['step_number'];
 			$stepCount = $_GET['step_count'];
+			
+			//Initialisation des valeurs des étapes précédentes/suivantes
 			$nextStep = $stepNumber + 1;
 			$previousStep = $stepNumber - 1;
 			
-			//Get the current step information
+			//Récupération des informations de la recette actuelle
 			$query = $db->prepare("SELECT * FROM getStepInfo(:recipeNumber, :stepNumber)");
 			$query->bindParam(':recipeNumber', $recipeNumber);
 			$query->bindParam(':stepNumber', $stepNumber);
 			$query->execute();
 			$step = $query->fetch();
 			
+			//Formattage de la durée
 			$duration = $step['duration'];
 			$durationInSeconds = $duration * 60;
 			$durationFormatted = date("H:i:s", $durationInSeconds);
 	?>
+	<!-- Affichage de la première carte (étape) -->
 	<div class="card">
 		<h2 class="text-lg font-medium">Etape n°<?= $stepNumber ?>: <?= $step['step_name'] ?></a></h2>
 		<div class="stepCard">
 			<h3 class="text-lg font-medium">Durée: <?= $step['duration']?> minutes,  Catégorie: <?= $step['category'] ?></a></h3>
 			<p class="card-text">Description: <?= $step['description'] ?></p>
 		</div>
-		
+		<!-- Affichage de la carte avec le timer -->
 		<?php if ($duration > 0): ?>
 			<div class="beerCard">
 				<div id="timer">
@@ -41,7 +45,7 @@
 		<?php endif; ?>
 	</div>
 	
-
+	<!-- Boutons de navigation entre les étapes -->
 	<button class="button-class 
 		<?php if ($stepNumber == 1) echo 'hide'; ?> bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600" 
 		<?php if ($stepNumber == 1): ?> disabled <?php endif; ?> 
@@ -63,6 +67,7 @@
 </main>
 <?php include './footer.php';?>
 <script>
+//js scripts de gestion du timer
   var duration = <?= $step['duration']*60 ?>;
   var intervalId;
 
@@ -102,5 +107,5 @@
     if (minutes < 10) {minutes = "0"+minutes;}
     if (seconds < 10) {seconds = "0"+seconds;}
     return hours+'h '+minutes+'m '+seconds+'s';
-}
+  }
 </script>

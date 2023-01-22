@@ -2,6 +2,7 @@
 session_start();
 
 try {
+	//Connexion à la base de données
     $db = new PDO("pgsql:host=bdr-project-postgresql;dbname=just_brew_it", "bdr", "bdr");
     $db->exec("SET search_path TO justbrewit");
 } catch (PDOException $e) {
@@ -13,12 +14,14 @@ try {
 <html lang="FR">
 <head>
     <title>Just Brew It!</title>
+	<!-- Définition des feuilles de style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
-    <link rel="stylesheet" href="cards/style.css">
-	<link rel="stylesheet" href="buttons/style.css">
+    <link rel="stylesheet" href="css/cards/style.css">
+	<link rel="stylesheet" href="css/buttons/style.css">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body class="bg-gray-200">
+<!-- Header du site -->
 <header class="bg-white p-6">
     <nav class="flex justify-between items-center">
         <h1 class="text-lg font-medium"><a href="./index.php">Just Brew It!</a></h1>
