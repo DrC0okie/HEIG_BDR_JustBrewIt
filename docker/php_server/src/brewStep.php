@@ -11,14 +11,6 @@
 			$nextStep = $stepNumber + 1;
 			$previousStep = $stepNumber - 1;
 			
-			//Get the remaining time of this step for the given user and recipe
-			$remTime = $db->prepare("SELECT * FROM getRemainingTime(:recipeId, :stepId, :userId)");
-			$remTime->bindParam(':recipeId', $recipeNumber);
-			$remTime->bindParam(':stepId', $stepNumber);
-			$remTime->bindParam(':userId', $_SESSION['customer_id']);
-			$remTime->execute();
-			$remainingTime = $remTime->fetch();
-			
 			//Get the current step information
 			$query = $db->prepare("SELECT * FROM getStepInfo(:recipeNumber, :stepNumber)");
 			$query->bindParam(':recipeNumber', $recipeNumber);
@@ -26,12 +18,7 @@
 			$query->execute();
 			$step = $query->fetch();
 			
-			//Sets the timer to the remaining time, or the default step duration
-			if($remainingTime[0] == 0 || is_null($remainingTime[0])){
-				$duration = $step['duration'];
-			}else{
-				$duration = $remainingTime[0];
-			}
+			$duration = $step['duration'];
 			$durationInSeconds = $duration * 60;
 			$durationFormatted = date("H:i:s", $durationInSeconds);
 	?>
@@ -40,16 +27,18 @@
 		<div class="stepCard">
 			<h3 class="text-lg font-medium">Durée: <?= $step['duration']?> minutes,  Catégorie: <?= $step['category'] ?></a></h3>
 			<p class="card-text">Description: <?= $step['description'] ?></p>
-			<p class="card-text">remainingTime: <?= $remainingTime[0] ?></p>
 		</div>
-		<div class="beerCard">
-			<div id="timer">
-				<p id="time">Durée: <?= $durationFormatted ?></p>
-				<button class="bg-green-300 text-black p-1 rounded-lg hover:bg-green-400" id="start" onclick="startTimer()">Commencer</button>
-				<button class="bg-yellow-300 text-black p-1 rounded-lg hover:bg-yellow-400"id="pause" onclick="pauseTimer()">Pause</button>
-				<button class="bg-red-300 text-black p-1 rounded-lg hover:bg-red-400"id="reset" onclick="resetTimer()">Mise à 0</button>
+		
+		<?php if ($duration > 0): ?>
+			<div class="beerCard">
+				<div id="timer">
+					<p id="time">Durée: <?= $durationFormatted ?></p>
+					<button id="startButton" class="bg-green-300 text-black p-1 rounded-lg hover:bg-green-400" id="start" onclick="startTimer()">Commencer</button>
+					<button id="pauseButton" class="bg-yellow-300 text-black p-1 rounded-lg hover:bg-yellow-400"id="pause" onclick="pauseTimer()">Pause</button>
+					<button class="bg-red-300 text-black p-1 rounded-lg hover:bg-red-400"id="reset" onclick="resetTimer()">Mise à 0</button>
+				</div>
 			</div>
-		</div>
+		<?php endif; ?>
 	</div>
 	
 
@@ -72,26 +61,22 @@
 		}
 	?>
 </main>
-<?php include './footer.php';
-
-    function startStep($recipeId, $stepId, $customerId) {
-        $query = $db->prepare("SELECT startStep(:recipeId, :stepId, :customerId)");
-        $query->bindParam(':recipeId', $recipeId);
-        $query->bindParam(':stepId', $stepId);
-        $query->bindParam(':customerId', $customerId);
-        $query->execute();
-	}
-?>
+<?php include './footer.php';?>
 <script>
   var duration = <?= $step['duration']*60 ?>;
   var intervalId;
 
   function startTimer() {
     intervalId = setInterval(function() {
+	 if (duration >= 0) {
       duration--;
+	 }
       document.getElementById("time").innerHTML = toHHMMSS();
-      if (duration == 0) {
+      if (duration <= 0) {
         clearInterval(intervalId);
+		document.getElementById("time").innerHTML = 'Temps écoulé!'
+		document.getElementById("startButton").style.display = "none"; 
+		document.getElementById("pauseButton").style.display = "none"; 
       }
     }, 1000);
   }
@@ -104,6 +89,8 @@
     clearInterval(intervalId);
     duration = <?= $step['duration']*60 ?>;
     document.getElementById("time").innerHTML = toHHMMSS();
+	document.getElementById("startButton").style.display = "inline"; 
+	document.getElementById("pauseButton").style.display = "inline"; 
   }
   
   function toHHMMSS() {

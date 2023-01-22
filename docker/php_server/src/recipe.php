@@ -40,7 +40,7 @@
 			<div class="card">
 				<h2 class="text-lg font-medium">Houblons</a></h2>
 				<div class="card-grid">
-					<?foreach ($hops as $hop) { 
+					<?php foreach ($hops as $hop) { 
 						?>
 						<div class="hopsCard">
 							<h3 class="card-title"><?= $hop['name'] ?></h3>
