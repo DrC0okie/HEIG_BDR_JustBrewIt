@@ -184,6 +184,19 @@ if(isset($_SESSION['username'])){
                     >
                 </div>
                 <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-category">
+                        Catégorie de l'étape ${actualStepNb} :
+                    </label>
+                    <select
+                            class="form-select py-2 px-3 block w-full leading-5appearance-none bg-white border border-gray-400 text-gray-700 py-2 px-3 pr-8 focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+                            id="step-${actualStepNb}-category"
+                            name="step-${actualStepNb}-category"
+                            required
+                    >
+                        <option value="option">Option 1</option>
+                    </select>
+                </div>
+                <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-duration">
                         Durée de l'étape ${actualStepNb} :
                     </label>
@@ -207,26 +220,29 @@ if(isset($_SESSION['username'])){
                             required
                     ></textarea>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-category">
-                        Catégorie de l'étape ${actualStepNb} :
-                    </label>
-                    <select
-                            class="form-select py-2 px-3 block w-full leading-5appearance-none bg-white border border-gray-400 text-gray-700 py-2 px-3 pr-8 focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
-                            id="step-${actualStepNb}-category"
-                            name="step-${actualStepNb}-category"
-                            required
-                    >
-                        <option value="malt">Malt</option>
-                        <option value="hops">Houblon</option>
-                        <option value="yeast">Levure</option>
-                        <option value="water">Eau</option>
-                        <option value="other">Autre</option>
-                    </select>
             `;
-            <?php
 
-            ?>
+            let options = "test";
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('GET', 'getStepCategory.php', true);
+
+            xhr.onload = function () {
+                const categories = JSON.parse(this.responseText);
+                console.log(categories);
+                if (this.status === 200) {
+                    const categories = JSON.parse(this.responseText);
+                    console.log(categories);
+                    options+= categories[0];
+                    categories.forEach(category => {
+                        options += `<option value="${category}">${category}</option>`;
+                    });
+                }
+            };
+
+            newStep.innerHTML = newStep.innerHTML.replace(`<option value="option">Option 1</option>`, options);
+
             container.appendChild(newStep);
         }
     </script>
