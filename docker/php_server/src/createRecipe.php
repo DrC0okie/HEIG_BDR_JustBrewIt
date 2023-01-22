@@ -2,22 +2,108 @@
 <?php
 if(isset($_SESSION['username'])){
 
-    $email = $_SESSION['username'];
-
     $query = $db->prepare("SELECT get_customer_id_by_email(:email);");
-    $query->bindParam(':email', $email);
-    $query->execute();
-    $customerId = $query->fetchColumn();
 
-    $query = $db->prepare("SELECT * FROM get_recipe_info_by_customer_id(?)");
-    $query->execute([$customerId]);
-    $recipes = $query->fetchAll();
+
+    if (isset($_POST['recipe-name']) &&
+    isset($_POST['difficulty-slider']) &&
+    isset($_POST['beer-name']) &&
+    isset($_POST['beer-color']) &&
+    isset($_POST['alcohol-percentage']) &&
+    isset($_POST['beer-number']) &&
+    isset($_POST['beer-bitterness']) &&
+    isset($_POST['beer-pre-density']) &&
+    isset($_POST['beer-ini-density']) &&
+    isset($_POST['beer-final-density']) &&
+    isset($_POST['step-1-name']) &&
+    isset($_POST['step-1-duration']) &&
+    isset($_POST['step-1-category']) &&
+    isset($_POST['step-1-description'])) {
+
+        $query = $db->prepare("INSERT INTO beer VALUES (DEFAULT, :name, :color, :alcohol_percentage, :bitterness, :pre_density, :ini_density, :final_density);");
+        $query->execute([
+            'name' => $_POST['beer-name'],
+            'color' => $_POST['beer-color'],
+            'alcohol_percentage' => $_POST['alcohol-percentage'],
+            'bitterness' => $_POST['beer-bitterness'],
+            'pre_density' => $_POST['beer-pre-density'],
+            'ini_density' => $_POST['beer-ini-density'],
+            'final_density' => $_POST['beer-final-density']
+        ]);
+
+        $query = $db->prepare("INSERT INTO recipe VALUES (DEFAULT, :name, :difficulty,  :customer_id, :beer_id, :beer_nb);");
+
+        $query->execute([
+            'name' => $_POST['recipe-name'],
+            'difficulty' => $_POST['difficulty-slider'],
+            'customer_id' => $_SESSION['customer_id'],
+            'beer_id' => $db->lastInsertId(),
+            'beer_nb' => $_POST['beer-number']
+        ]);
+
+        $recipe_id = $db->lastInsertId();
+
+        $step_count = 1;
+
+        while(isset($_POST['step-' . $step_count . '-name']) &&
+        isset($_POST['step-' . $step_count . '-duration']) &&
+        isset($_POST['step-' . $step_count . '-category']) &&
+        isset($_POST['step-' . $step_count . '-description'])) {
+            $query = $db->prepare("INSERT INTO brewing_step VALUES (:id, :name, :duration, :description, :category, :recipe_id);");
+            $query->execute([
+                'id' => $step_count,
+                'name' => $_POST['step-' . $step_count . '-name'],
+                'duration' => $_POST['step-' . $step_count . '-duration'],
+                'description' => $_POST['step-' . $step_count . '-description'],
+                'category' => $_POST['step-' . $step_count . '-category'],
+                'recipe_id' => $recipe_id
+            ]);
+
+            $ingredient_count = 1;
+
+            while(isset($_POST['step-' . $step_count .'-ingredient-' . $ingredient_count]) &&
+                isset($_POST['step-' . $step_count .'-ingredient-' . $ingredient_count . '-quantity'])) {
+                if (preg_match('/^\d+$/', $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count])) {
+                    $ing_id = $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count];
+                } else {
+                    echo "new ingredient";
+                    $query = $db->prepare("SELECT add_ingredient(:name, :origin, :sub_origin, :specificity, :quantity_unit, :price_per_unit);");
+
+                    $query->execute([
+                        'name' => $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count],
+                        'origin' => $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count . '-origin'],
+                        'sub_origin' => null,
+                        'specificity' => $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count . '-specificity'],
+                        'quantity_unit' => $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count . '-unity'],
+                        'price_per_unit' => null
+                    ]);
+
+                    $ing_id = $db->lastInsertId();
+                }
+
+                $query = $db->prepare("INSERT INTO ingredient_usage VALUES (:quantity, :step_id, :ingredient_id, :recipe_id);");
+
+                $query->execute([
+                    'quantity' => $_POST['step-' . $step_count .'-ingredient-' . $ingredient_count . '-quantity'],
+                    'step_id' => $step_count,
+                    'ingredient_id' => $ing_id,
+                    'recipe_id' => $recipe_id
+                ]);
+
+                $ingredient_count++;
+            }
+            $step_count++;
+        }
+
+        echo "<script>window.location = './recipes.php'</script>";
+    }
+
 } else {
-    header("Location: login.php");
+    echo "<script>window.location = './login.php'</script>";
 }
 ?>
 <main class="p-6">
-    <form class="bg-white p-6 rounded-lg">
+    <form class="bg-white p-6 rounded-lg" method="post">
         <h2 class="text-lg font-medium mb-4">Ajouter une nouvelle recette</h2>
         <div class="mb-4">
             <label class="block text-gray-700 font-medium mb-2" for="recipe-name">
@@ -63,6 +149,20 @@ if(isset($_SESSION['username'])){
                     type="text"
                     id="beer-name"
                     name="beer-name"
+                    required
+            >
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2" for="beer-number">
+                Nombre de bières :
+            </label>
+            <input
+                    class="border border-gray-400 p-2 w-full"
+                    type="number"
+                    min="1"
+                    step="1"
+                    id="beer-number"
+                    name="beer-number"
                     required
             >
         </div>
@@ -155,13 +255,10 @@ if(isset($_SESSION['username'])){
         <button type="button" onclick="addStep()" class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600">
             Ajouter une étape
         </button>
-    <?php
-    $actualStepNb = 1;
-
-    ?>
-        <button class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600">
-            Ajouter la recette
-        </button>
+        <div class="text-center mt-6">
+            <input class="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600"
+                   type="submit" name="submit" value="Créer la recette">
+        </div>
     </form>
 
 
@@ -212,6 +309,7 @@ if(isset($_SESSION['username'])){
                     <label class="block text-gray-700 font-medium mb-2">
                         Ingrédients de l'étape ${actualStepNb} :
                     </label>
+                </div>
                 <div class="mb-4" id="step-${actualStepNb}-ingredients">
                 </div>
                 <button type="button" onclick="addIngredient(${actualStepNb})" class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600">
@@ -221,15 +319,16 @@ if(isset($_SESSION['username'])){
                     Ajouter un nouvel ingrédient
                 </button>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-duration">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${actualStepNb}-description">
                         Description de l'étape ${actualStepNb} :
                     </label>
-                    <textarea
+                    <input
                             class="border border-gray-400 p-2 w-full"
+                            type="text"
                             id="step-${actualStepNb}-description"
                             name="step-${actualStepNb}-description"
                             required
-                    ></textarea>
+                    >
                 </div>
             `;
 
@@ -295,7 +394,7 @@ if(isset($_SESSION['username'])){
                 if (this.readyState === 4 && this.status === 200) {
                     const ingredients = JSON.parse(this.responseText);
                     ingredients.forEach(ingredient => {
-                        options += `<option value="${ingredient[0]}">${ingredient[0]} [${ingredient[1]}]</option>`;
+                        options += `<option value="${ingredient[2]}">${ingredient[0]} [${ingredient[1]}]</option>`;
                     });
                     document.getElementById(`step-${stepNb}-ingredient-${actualIngredientNb}`).innerHTML = options;
                 }
@@ -316,14 +415,14 @@ if(isset($_SESSION['username'])){
 
             newIngredient.innerHTML = `
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}-name">
+                    <label class="block text-gray-700 font-medium mb-2" for="step-${stepNb}-ingredient-${actualIngredientNb}">
                         Nom de l'ingrédient ${actualIngredientNb} de l'étape ${stepNb} :
                     </label>
                     <input
                             class="border border-gray-400 p-2 w-full"
                             type="text"
-                            id="step-${stepNb}-ingredient-${actualIngredientNb}-name"
-                            name="step-${stepNb}-ingredient-${actualIngredientNb}-name"
+                            id="step-${stepNb}-ingredient-${actualIngredientNb}"
+                            name="step-${stepNb}-ingredient-${actualIngredientNb}"
                             required
                     >
                 </div>

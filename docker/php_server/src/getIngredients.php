@@ -12,7 +12,7 @@ try {
 }
 
 if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-    $query = $db->prepare("SELECT name, quantity_unit from ingredient");
+    $query = $db->prepare("SELECT name, quantity_unit, ingredient_id from ingredient");
     $query->execute();
     $stepCategories = $query->fetchAll();
     echo json_encode($stepCategories, JSON_UNESCAPED_UNICODE);
