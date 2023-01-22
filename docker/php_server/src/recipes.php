@@ -2,15 +2,8 @@
 <main class="p-6">
     <?php
 		if(isset($_SESSION['username'])){
-			$email = $_SESSION['username'];
-
-			$query = $db->prepare("SELECT get_customer_id_by_email(:email);");
-			$query->bindParam(':email', $email);
-			$query->execute();
-			$customerId = $query->fetchColumn();
-
 			$query = $db->prepare("SELECT * FROM get_recipe_info_by_customer_id(?)");
-			$query->execute([$customerId]);
+			$query->execute([$_SESSION['customer_id']]);
 			$recipes = $query->fetchAll();
 			
 			foreach ($recipes as $recipe) { ?>

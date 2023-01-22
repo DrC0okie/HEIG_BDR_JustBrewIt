@@ -10,12 +10,28 @@
 			$stepCount = $_GET['step_count'];
 			$nextStep = $stepNumber + 1;
 			$previousStep = $stepNumber - 1;
+			
+			//Get the remaining time of this step for the given user and recipe
+			$remTime = $db->prepare("SELECT * FROM getRemainingTime(:recipeId, :stepId, :userId)");
+			$remTime->bindParam(':recipeId', $recipeNumber);
+			$remTime->bindParam(':stepId', $stepNumber);
+			$remTime->bindParam(':userId', $_SESSION['customer_id']);
+			$remTime->execute();
+			$remainingTime = $remTime->fetch();
+			
+			//Get the current step information
 			$query = $db->prepare("SELECT * FROM getStepInfo(:recipeNumber, :stepNumber)");
 			$query->bindParam(':recipeNumber', $recipeNumber);
 			$query->bindParam(':stepNumber', $stepNumber);
 			$query->execute();
 			$step = $query->fetch();
-			$duration = $step['duration'];
+			
+			//Sets the timer to the remaining time, or the default step duration
+			if($remainingTime[0] == 0 || is_null($remainingTime[0])){
+				$duration = $step['duration'];
+			}else{
+				$duration = $remainingTime[0];
+			}
 			$durationInSeconds = $duration * 60;
 			$durationFormatted = date("H:i:s", $durationInSeconds);
 	?>
@@ -24,6 +40,7 @@
 		<div class="stepCard">
 			<h3 class="text-lg font-medium">Durée: <?= $step['duration']?> minutes,  Catégorie: <?= $step['category'] ?></a></h3>
 			<p class="card-text">Description: <?= $step['description'] ?></p>
+			<p class="card-text">remainingTime: <?= $remainingTime[0] ?></p>
 		</div>
 		<div class="beerCard">
 			<div id="timer">
@@ -55,8 +72,16 @@
 		}
 	?>
 </main>
-<?php include './footer.php';?>
+<?php include './footer.php';
 
+    function startStep($recipeId, $stepId, $customerId) {
+        $query = $db->prepare("SELECT startStep(:recipeId, :stepId, :customerId)");
+        $query->bindParam(':recipeId', $recipeId);
+        $query->bindParam(':stepId', $stepId);
+        $query->bindParam(':customerId', $customerId);
+        $query->execute();
+	}
+?>
 <script>
   var duration = <?= $step['duration']*60 ?>;
   var intervalId;

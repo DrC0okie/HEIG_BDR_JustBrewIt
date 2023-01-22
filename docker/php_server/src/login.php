@@ -14,6 +14,10 @@ if(isset($_POST['submit'])){
 
     // Vérifier si les informations d'identification sont valides
     if($query->rowCount() == 1){
+		//Retreive the user ID and put it in the session
+		$customer = $query->fetch();
+		$_SESSION['customer_id'] = $customer['customer_id'];
+		
         // Démarrer une session et rediriger vers la page protégée
         $_SESSION['logged_in'] = true;
         $_SESSION['username'] = $username;
