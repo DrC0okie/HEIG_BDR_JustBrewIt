@@ -3,33 +3,40 @@
 	<?php
 		if (isset($_GET['recipe_number'])&& isset($_SESSION['username'])) {
 			$recipeNumber = $_GET['recipe_number'];
-
+			
+			//Chercher les informations de la bière dans la BD
 			$query = $db->prepare("SELECT * FROM getBeerFromRecipe(?)");
 			$query->execute([$recipeNumber]);
 			$beer = $query->fetch();
 			
+			//Chercher les informations des houblons dans la BD
 			$query = $db->prepare("SELECT * FROM getHopsFromRecipes(?)");
 			$query->execute([$recipeNumber]);
 			$hops = $query->fetchAll();
 			
+			//Chercher les informations des malts dans la BD
 			$query = $db->prepare("SELECT * FROM getMaltsFromRecipes(?)");
 			$query->execute([$recipeNumber]);
 			$malts = $query->fetchAll();
 			
+			//Chercher les informations des levures dans la BD
 			$query = $db->prepare("SELECT * FROM getYeastFromRecipes(?)");
 			$query->execute([$recipeNumber]);
 			$yeasts = $query->fetchAll();
 			
+			//Chercher les autres ingrédients dans la BD
 			$query = $db->prepare("SELECT * FROM getMiscIngredientsFromRecipe(?)");
 			$query->execute([$recipeNumber]);
 			$ingredients = $query->fetchAll();
 			
+			//Chercher les étapes dans la BD
 			$query = $db->prepare("SELECT * FROM getStepsFromRecipe(?)");
 			$query->execute([$recipeNumber]);
 			$steps = $query->fetchAll();
 			$stepCount = $steps[0]['step_count']
 			?>
-
+			
+			<!-- affichage de la carte de la bière -->
 			<h2 class="text-lg font-medium">Bière produite</a></h2>
 			<div class="beerCard">
 				<h3 class="card-title"><?= $beer['nom'] ?></h3>
@@ -37,10 +44,11 @@
 				<p class="card-text">Amertume: <?= $beer['amertume'] ?> IBU</p>
 				<p class="card-text">Couleur: <?= $beer['couleur'] ?> EBC</p>
 			</div>
+			<!-- affichage des cartes des houblons -->
 			<div class="card">
 				<h2 class="text-lg font-medium">Houblons</a></h2>
 				<div class="card-grid">
-					<?foreach ($hops as $hop) { 
+					<?php foreach ($hops as $hop) { 
 						?>
 						<div class="hopsCard">
 							<h3 class="card-title"><?= $hop['name'] ?></h3>
@@ -54,6 +62,7 @@
 					<?php } ?>
 				</div>
 			</div>
+			<!-- affichage des cartes des malts -->
 			<div class="card">
 				<h2 class="text-lg font-medium">Malts</a></h2>
 				<div class="card-grid">
@@ -72,6 +81,7 @@
 					<?php } ?>
 				</div>
 			</div>
+			<!-- affichage des cartes des levures -->
 			<div class="card">
 				<h2 class="text-lg font-medium">Levures</a></h2>
 				<div class="card-grid">
@@ -90,6 +100,7 @@
 					<?php } ?>
 				</div>
 			</div>
+			<!-- affichage des cartes des autres ingrédients -->
 			<div class="card">
 				<h2 class="text-lg font-medium">Autres ingrédients</a></h2>
 				<div class="card-grid">
@@ -105,6 +116,7 @@
 					<?php } ?>
 				</div>
 			</div>
+			<!-- affichage des cartes des étapes de brassage -->
 			<div class="card">
 				<h2 class="text-lg font-medium">Étapes de brassage</a></h2>
 				<div class="card-grid">

@@ -1109,7 +1109,7 @@ INSERT INTO brewing_step
 VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 2);
 
 INSERT INTO brewing_step
-VALUES(1, 'Préparation', 0, '', 'Préparation', 3);
+VALUES(1, 'Préparation', 1, '', 'Préparation', 3);
 
 INSERT INTO brewing_step
 VALUES(2, 'Empâtage', 60, '', 'Empâtage', 3);

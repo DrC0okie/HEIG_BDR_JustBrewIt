@@ -2,10 +2,12 @@
 <main class="p-6">
     <?php
 		if(isset($_SESSION['username'])){
+			//Récupération des informations des recettes du user actuel
 			$query = $db->prepare("SELECT * FROM get_recipe_info_by_customer_id(?)");
 			$query->execute([$_SESSION['customer_id']]);
 			$recipes = $query->fetchAll();
 			
+			//Création des cartes pour afficher les recettes
 			foreach ($recipes as $recipe) { ?>
 			<div class="card">
 				<h2 class="text-lg font-medium"><a href="./index.php">Recettes</a></h2>
@@ -22,13 +24,15 @@
 			</div>
 	<?php }
 } else {
-            echo "<script>window.location = './login.php'</script>";
+	//Retour à la page login si le user n'est pas connecté
+    echo "<script>window.location = './login.php'</script>";
 }
 	?>
 
+	<!-- Bouton pour la création de nouvelles recettes -->
     <button
-            class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
-            onclick="window.location.href='./createRecipe.php'"
+        class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
+        onclick="window.location.href='./createRecipe.php'"
     >
         Ajouter une recette
     </button>
