@@ -4,7 +4,7 @@
 <main class="p-6">
 
 	<?php
-		if (isset($_GET['recipe_number'])) {
+		if (isset($_GET['recipe_number'])&& isset($_SESSION['username'])) {
 			$recipeNumber = $_GET['recipe_number'];
 			$stepNumber = $_GET['step_number'];
 			$stepCount = $_GET['step_count'];
@@ -68,7 +68,7 @@
 
 
 	<?php } else {
-			header("Location: login.php");
+			echo "<script>window.location = './login.php'</script>";
 		}
 	?>
 </main>

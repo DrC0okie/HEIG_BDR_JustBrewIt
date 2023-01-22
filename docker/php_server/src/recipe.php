@@ -1,7 +1,7 @@
 <?php include './header.php';?>
 <main class="p-6">
 	<?php
-		if (isset($_GET['recipe_number'])) {
+		if (isset($_GET['recipe_number'])&& isset($_SESSION['username'])) {
 			$recipeNumber = $_GET['recipe_number'];
 
 			$query = $db->prepare("SELECT * FROM getBeerFromRecipe(?)");
@@ -83,7 +83,7 @@
 							<p class="card-text">Quantité: <?= $yeast['quantity'] ?><?= $yeast['quantity_unit'] ?></p>
 							<p class="card-text">Origine: <?= $yeast['origin'] ?></p>
 							<p class="card-text">Type de bière: <?= $yeast['beer_type'] ?></p>
-							<p class="card-text">Type de bière: <?= $yeast['fermentation'] ?></p>
+							<p class="card-text">Type de fermentation: <?= $yeast['fermentation'] ?></p>
 							<p class="card-text">Température de fermentation: <?= $yeast['min_temperature'] ?> - <?= $yeast['max_temperature'] ?>°c</p>
 							<p class="card-text">Description: <?= $yeast['specificity'] ?></p>
 						</div>
@@ -120,7 +120,7 @@
 				</div>
 			</div>
 	<?php } else {
-			header("Location: login.php");
+			echo "<script>window.location = './login.php'</script>";
 		}
 	?>
     <button class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
