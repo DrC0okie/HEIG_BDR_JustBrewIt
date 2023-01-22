@@ -9,6 +9,7 @@
 			$stepNumber = $_GET['step_number'];
 			$stepCount = $_GET['step_count'];
 			$nextStep = $stepNumber + 1;
+			$previousStep = $stepNumber - 1;
 			$query = $db->prepare("SELECT * FROM getStepInfo(:recipeNumber, :stepNumber)");
 			$query->bindParam(':recipeNumber', $recipeNumber);
 			$query->bindParam(':stepNumber', $stepNumber);
@@ -24,14 +25,17 @@
 	</div>
 	
 
-	<button 
-    <?php if ($stepCount == $stepNumber): ?>
-		style="display:none" disabled
-    <?php else: ?>
-        class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
-    <?php endif; ?>
-    onclick="window.location.href='./brewStep.php?recipe_number=<?= $recipeNumber ?>&step_count=<?= $stepCount ?>&step_number=<?= $nextStep ?>'">
-        Prochaine étape
+	<button class="button-class 
+		<?php if ($stepNumber == 1) echo 'hide'; ?> bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600" 
+		<?php if ($stepNumber == 1): ?> disabled <?php endif; ?> 
+		onclick="window.location.href='./brewStep.php?recipe_number=<?= $recipeNumber ?>&step_count=<?= $stepCount ?>&step_number=<?= $previousStep ?>'">
+		Étape précédente
+	</button>
+	<button class="button-class 
+		<?php if ($stepCount == $stepNumber) echo 'hide'; ?> bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600" 
+		<?php if ($stepCount == $stepNumber): ?> disabled <?php endif; ?>
+		onclick="window.location.href='./brewStep.php?recipe_number=<?= $recipeNumber ?>&step_count=<?= $stepCount ?>&step_number=<?= $nextStep ?>'">
+		Prochaine étape
 	</button>
 
 
