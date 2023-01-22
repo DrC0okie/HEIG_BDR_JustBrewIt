@@ -16,11 +16,11 @@ CREATE TYPE category AS ENUM(
     'Embouteillage');
 
 CREATE TYPE cereal AS ENUM(
-    'barley',
-    'wheat',
-    'rye',
-    'rice',
-    'corn'
+    'orge',
+    'blé',
+    'seigle',
+    'épeautre',
+    'maïs'
     );
 
 CREATE TYPE hop_type AS ENUM(
@@ -30,8 +30,8 @@ CREATE TYPE hop_type AS ENUM(
     );
 
 CREATE TYPE fermentation_type AS ENUM(
-    'high',
-    'low'
+    'haute',
+    'basse'
     );
 
 CREATE TABLE customer (
@@ -952,68 +952,68 @@ CALL add_hop('Citra', 'USA', null, 'Fruité (pêche), agrumes', 'gr', null, null
 CALL add_hop('Crystal', 'USA', null, 'Fruité (tropical), boisé, herbacé', 'gr', null, null, 'aromatic', 5.0, 8.0);
 CALL add_hop('Willamette', 'USA', null, 'Fruité, herbacé, épicé', 'gr', null, null, 'aromatic', 5.0, 8.0);
 
-CALL add_malt('Pilsner', null, null, 'Bières de type Pilsner, pils aux couleurs extra claires et toutes les lager, ale demandant une base de malt pale','kg', 15.5, 2, 3, 'Pilsen', 'barley');
-CALL add_malt('Pilsner', null, null, 'Bières de type Pilsen et tout autre type de bière lager, ale','kg', 15.5, 2, 4, 'Pilsen', 'barley');
-CALL add_malt('Pale Ale', null, null, 'Approprié pour toutes les bières Ale, Stout, Porter','kg', 15.0, 5, 7, 'Pale Ale', 'barley');
-CALL add_malt('Vienne', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières de type Octobre','kg', 15.4, 6, 9, 'Vienne', 'barley');
-CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.3, 12, 17, 'Munich', 'barley');
-CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.2, 20, 25, 'Munich', 'barley');
-CALL add_malt('Acidulé', null, null, 'Bières type Pilsen, bières légères, bières pression, bières blanches','kg', 17.9, 3, 6, 'Acidulé', 'barley');
-CALL add_malt('Mélanoïdé', null, null, 'Bières blanches, bières Bock, bières brunes, bières rousses, bières ambrées','kg', 15.5, 60, 80, 'Spécial', 'barley');
-CALL add_malt('de blé', null, null, 'Bières haute fermentation, bières sombres','kg', 15.9, 100, 140, 'Blé', 'wheat');
-CALL add_malt('Carapils', null, null, 'Bières type Pilsen, bières sans alcool, bières légères, lager','kg', 15.5, 25, 65, 'Pilsen', 'barley');
-CALL add_malt('Carahell', null, null, 'Bières blondes, type « Export », bières de fête, boissons maltées','kg', 15.6, 20, 30, 'Pilsen', 'barley');
-CALL add_malt('Carared', null, null, 'Bières brunes, bières Bock, bières ambrées, bières Alt, bières blanches, Red Ales, Scottish Ales','kg', 16.1, 40, 60, 'Roux', 'barley');
-CALL add_malt('Caraamber', null, null, 'Bières Bock, bières brunes, bières rousses, bières ambrées, Amber Lagers, Amber Ales','kg', 15.5, 60, 80, 'Ambré', 'barley');
-CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.2, 80, 100, 'Munich', 'barley');
-CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.5, 110, 130, 'Munich', 'barley');
-CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.7, 140, 160, 'Munich', 'barley');
-CALL add_malt('Caraaroma', null, null, 'Bières brunes, bières Bock, bières ambrées, bières de garde brunes, Dark Ales, Stouts, Porters','kg', 15.8, 350, 450, 'Spécial', 'barley');
-CALL add_malt('Carabelge', null, null, 'Bières spéciales belges, bières blondes belges, Bruin belges, bières ambrées belges, Triple, Dubbel','kg', 15.8, 30, 35, 'Belge', 'barley');
-CALL add_malt('caramélisé', null, null, 'Lager de Bohème, Bock de Bohème, bières spéciales de Bohème, Porter, Stout, Ale','kg', 15.8, 170, 220, 'Caramel', 'barley');
-CALL add_malt('Pilsner Bohème', null, null, 'Bières type Pilsen, tout autre type de bière','kg', 15.5, 3, 4, 'Pilsen / Bohème', 'barley');
-CALL add_malt('de Bohème', null, null, 'Bières type Pilsen selon la méthode de Bohème, Bières européennes de basse fermentation','kg', 15.8, 3, 5, 'Bohème', 'barley');
-CALL add_malt('d''abbaye', null, null, 'Bières d’abbaye traditionnelles, bières trappistes, bières spéciales belges, bières blondes belges, Bruin belges','kg', 15.6, 40, 50, 'Belge', 'barley');
-CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 19.0, 1100, 1200, 'Torréfié / Chocolat', 'barley');
-CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 18.5, 1300, 1500, 'Torréfié / Chocolat', 'barley');
-CALL add_malt('de seigle torréfié', null, null, 'Bières spéciales de haute fermentation','kg', 19.5, 500, 800, 'Seigle / Torréfié', 'barley');
-CALL add_malt('d''épeautre torréfié', null, null, 'Bières à plusieurs grains, produits de boulangerie','kg', 41.0, 450, 650, 'Epeautre / Torréfié', 'barley');
-CALL add_malt('spécial W', null, null, 'Bruin belges, bières belges ambrées, bières spéciales belges, bières blondes belges, bières ambrées belges','kg', 20.0, 280, 320, 'Spécial', 'barley');
-CALL add_malt('Barke vienne', null, null, 'Bavarian dunkel, bières de fêtes, pale ale, IPA, stout, lager','kg', 18.5, 6, 9, 'Vienne', 'barley');
-CALL add_malt('Barke Munich', null, null, 'Bières de fêtes, bières bock, bières sombres, stout, bières Münich','kg', 17.0, 17, 22, 'Munich', 'barley');
+CALL add_malt('Pilsner', null, null, 'Bières de type Pilsner, pils aux couleurs extra claires et toutes les lager, ale demandant une base de malt pale','kg', 15.5, 2, 3, 'Pilsen', 'orge');
+CALL add_malt('Pilsner', null, null, 'Bières de type Pilsen et tout autre type de bière lager, ale','kg', 15.5, 2, 4, 'Pilsen', 'orge');
+CALL add_malt('Pale Ale', null, null, 'Approprié pour toutes les bières Ale, Stout, Porter','kg', 15.0, 5, 7, 'Pale Ale', 'orge');
+CALL add_malt('Vienne', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières de type Octobre','kg', 15.4, 6, 9, 'Vienne', 'orge');
+CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.3, 12, 17, 'Munich', 'orge');
+CALL add_malt('Munich', null, null, 'Type « Export » bières de fête, bières de type Vienne, bières ambrée, Stout','kg', 15.2, 20, 25, 'Munich', 'orge');
+CALL add_malt('Acidulé', null, null, 'Bières type Pilsen, bières légères, bières pression, bières blanches','kg', 17.9, 3, 6, 'Acidulé', 'orge');
+CALL add_malt('Mélanoïdé', null, null, 'Bières blanches, bières Bock, bières brunes, bières rousses, bières ambrées','kg', 15.5, 60, 80, 'Spécial', 'orge');
+CALL add_malt('de blé', null, null, 'Bières haute fermentation, bières sombres','kg', 15.9, 100, 140, 'Blé', 'blé');
+CALL add_malt('Carapils', null, null, 'Bières type Pilsen, bières sans alcool, bières légères, lager','kg', 15.5, 25, 65, 'Pilsen', 'orge');
+CALL add_malt('Carahell', null, null, 'Bières blondes, type « Export », bières de fête, boissons maltées','kg', 15.6, 20, 30, 'Pilsen', 'orge');
+CALL add_malt('Carared', null, null, 'Bières brunes, bières Bock, bières ambrées, bières Alt, bières blanches, Red Ales, Scottish Ales','kg', 16.1, 40, 60, 'Roux', 'orge');
+CALL add_malt('Caraamber', null, null, 'Bières Bock, bières brunes, bières rousses, bières ambrées, Amber Lagers, Amber Ales','kg', 15.5, 60, 80, 'Ambré', 'orge');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.2, 80, 100, 'Munich', 'orge');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.5, 110, 130, 'Munich', 'orge');
+CALL add_malt('Caramunich', null, null, 'Bières brunes, bières de fête, bières de malt, boissons maltées, bières pression, bières légères','kg', 15.7, 140, 160, 'Munich', 'orge');
+CALL add_malt('Caraaroma', null, null, 'Bières brunes, bières Bock, bières ambrées, bières de garde brunes, Dark Ales, Stouts, Porters','kg', 15.8, 350, 450, 'Spécial', 'orge');
+CALL add_malt('Carabelge', null, null, 'Bières spéciales belges, bières blondes belges, Bruin belges, bières ambrées belges, Triple, Dubbel','kg', 15.8, 30, 35, 'Belge', 'orge');
+CALL add_malt('caramélisé', null, null, 'Lager de Bohème, Bock de Bohème, bières spéciales de Bohème, Porter, Stout, Ale','kg', 15.8, 170, 220, 'Caramel', 'orge');
+CALL add_malt('Pilsner Bohème', null, null, 'Bières type Pilsen, tout autre type de bière','kg', 15.5, 3, 4, 'Pilsen / Bohème', 'orge');
+CALL add_malt('de Bohème', null, null, 'Bières type Pilsen selon la méthode de Bohème, Bières européennes de basse fermentation','kg', 15.8, 3, 5, 'Bohème', 'orge');
+CALL add_malt('d''abbaye', null, null, 'Bières d’abbaye traditionnelles, bières trappistes, bières spéciales belges, bières blondes belges, Bruin belges','kg', 15.6, 40, 50, 'Belge', 'orge');
+CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 19.0, 1100, 1200, 'Torréfié / Chocolat', 'orge');
+CALL add_malt('torréfié', null, null, 'Bières fortes, Altbiere, bières Bock, bières très foncées','kg', 18.5, 1300, 1500, 'Torréfié / Chocolat', 'orge');
+CALL add_malt('de seigle torréfié', null, null, 'Bières spéciales de haute fermentation','kg', 19.5, 500, 800, 'Seigle / Torréfié', 'seigle');
+CALL add_malt('d''épeautre torréfié', null, null, 'Bières à plusieurs grains, produits de boulangerie','kg', 41.0, 450, 650, 'Epeautre / Torréfié', 'épeautre');
+CALL add_malt('spécial W', null, null, 'Bruin belges, bières belges ambrées, bières spéciales belges, bières blondes belges, bières ambrées belges','kg', 20.0, 280, 320, 'Spécial', 'orge');
+CALL add_malt('Barke vienne', null, null, 'Bavarian dunkel, bières de fêtes, pale ale, IPA, stout, lager','kg', 18.5, 6, 9, 'Vienne', 'orge');
+CALL add_malt('Barke Munich', null, null, 'Bières de fêtes, bières bock, bières sombres, stout, bières Münich','kg', 17.0, 17, 22, 'Munich', 'orge');
 
 CALL add_yeast('SAFALE BE-256 (abbaye)', null, null, 'Fermente très rapidement et révèle des arômes subtils et bien équilibrés',
-'Sachet', 4.8, 'Abbaye / Belge', 'high', 15, 25);
+'Sachet', 4.8, 'Abbaye / Belge', 'haute', 15, 25);
 
 CALL add_yeast('SAFALE F-2', null, null, 'Se caractérise par un profil aromatique neutre qui respecte les caractéristiques de la bière de base',
-'Sachet', 4.3, 'Refermentation', 'low', 15, 25);
+'Sachet', 4.3, 'Refermentation', 'basse', 15, 25);
 
 CALL add_yeast('SAFALE S-04', null, null, 'Excellentes propriétés de sédimentation, favorise une fermentation rapide',
-'Sachet', 3.3, 'Ale', 'high', 18, 24);
+'Sachet', 3.3, 'Ale', 'haute', 18, 24);
 
 CALL add_yeast('SAFLAGER S-23', null, null, 'Fournit des bières Pils fruitées et riches en ester',
-'Sachet', 4.4, 'Lager / Pilsner', 'low', 9, 15);
+'Sachet', 4.4, 'Lager / Pilsner', 'basse', 9, 15);
 
 CALL add_yeast('SAFALE US-05', null, null, 'Pour des bières balancées avec peu de diacétyle et un après-goût pur et rafraîchissant',
-'Sachet', 3.4, 'Ale', 'high', 15, 24);
+'Sachet', 3.4, 'Ale', 'haute', 15, 24);
 
 CALL add_yeast('SAFALE T-58', null, null, 'Développe des arômes poivrés et épicés',
-'Sachet', 2.7, 'Saison', 'high', 18, 24);
+'Sachet', 2.7, 'Saison', 'haute', 18, 24);
 
 CALL add_yeast('LalBrew Windsor', null, null, 'Levure de fermentation haute universelle fruitée',
-'Sachet', 4.5, 'Ale', 'high', 15, 25);
+'Sachet', 4.5, 'Ale', 'haute', 15, 25);
 
 CALL add_yeast('Bavarian Wheat M20', null, null, 'Sensation soyeuse en bouche et de délicieux arômes de banane et de clou de girofle',
-'Sachet', 3.2, 'Weizen', 'high', 18, 30);
+'Sachet', 3.2, 'Weizen', 'haute', 18, 30);
 
 CALL add_yeast('Hophead Ale M66', null, null, 'Un mélange d''enzymes de levure qui renforce les arômes et les esters, parfait pour les NEIPA',
-'Sachet', 4.5, 'IPA / NEIPA', 'high', 18, 22);
+'Sachet', 4.5, 'IPA / NEIPA', 'haute', 18, 22);
 
 CALL add_yeast('Belgian Tripel M31', null, null, 'Offre une grande tolérance à l''alcool, ce qui la rend idéale pour un éventail de bières belges',
-'Sachet', 4.6, 'Abbaye / Belge', 'high', 18, 28);
+'Sachet', 4.6, 'Abbaye / Belge', 'haute', 18, 28);
 
 CALL add_yeast('New World Strong M42', null, null, 'Convient notamment aux Porters et Russian Imperial Stouts',
-'Sachet', 3.3, 'Porter / Stout', 'high', 16, 22);
+'Sachet', 3.3, 'Porter / Stout', 'haute', 16, 22);
 
 SELECT add_ingredient('Sucre de canne', null, null, null,'gr', null);
 SELECT add_ingredient('Miel', null, null, null,'gr', null);
