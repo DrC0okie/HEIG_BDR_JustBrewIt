@@ -139,6 +139,10 @@
             onclick="window.location.href='./brewStep.php?recipe_number=<?= $recipeNumber ?>&step_count=<?= $stepCount ?>&amp;step_number=1'">
         Commencer le brassage
     </button>
+    <button class="bg-indigo-500 text-white p-2 rounded-lg hover:bg-indigo-600"
+            onclick="window.location.href='./modifyRecipe.php?recipe_number=<?= $recipeNumber ?>'">
+        Modifier la recette
+    </button>
 		
 </main>
 <?php include './footer.php';?>
