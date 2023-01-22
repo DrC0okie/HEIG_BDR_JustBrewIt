@@ -60,3 +60,6 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 16px;
 }
+.disabled-button {
+background-color: grey;
+}

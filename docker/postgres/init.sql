@@ -508,15 +508,16 @@ $$
 $$;
 
 -- obtenir toutes les étapes d'une recette
-DROP FUNCTION IF EXISTS getStepsFromRecipe;
-
 CREATE OR REPLACE FUNCTION getStepsFromRecipe(recipeId integer)
-RETURNS TABLE(step_number integer, step_name varchar, description text, duration real, category category)
+RETURNS TABLE(step_number integer, step_name varchar, description text, duration real, category category, step_count bigint)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT s.step_number, s.step_name, s.step_description, s.duration, s.category
+    RETURN QUERY SELECT s.step_number, s.step_name, s.step_description, s.duration, s.category,
+			(SELECT COUNT(*) 
+				FROM brewing_step 
+			WHERE recipe_number_fk = recipeId) AS step_count
         FROM stepsFromRecipe s
     WHERE s.recipe_number = recipeId;
     END;
@@ -526,22 +527,15 @@ $$;
 -- obtenir les informations concernant une étape
 DROP FUNCTION IF EXISTS getStepInfo;
 
-CREATE OR REPLACE FUNCTION getStepInfo
-(
-    recipeId integer,
-    stepId integer
-)
-RETURNS TABLE(nom varchar, description varchar, duree real)
+CREATE OR REPLACE FUNCTION getStepInfo(recipeId integer, stepId integer)
+RETURNS TABLE(step_name varchar, description text, duration real, category category)
 language plpgsql
 AS
 $$
     BEGIN
-    RETURN QUERY SELECT step_name, description, duration
-        FROM recipe
-        INNER JOIN brewing_step bs
-            ON recipe.recipe_number = bs.recipe_number_fk
-    WHERE recipe_number = recipeId
-    AND step_number = stepId;
+    RETURN QUERY SELECT s.step_name, s.step_description, s.duration, s.category
+        FROM stepsFromRecipe s
+    WHERE s.recipe_number = recipeId AND s.step_number = stepId;
     END;
 $$;
 
@@ -912,8 +906,6 @@ CREATE OR REPLACE VIEW ordersFromCustomers AS
         INNER JOIN ingredient i
             ON i.ingredient_id = iq.ingredient_id_fk;
 
-DROP VIEW IF EXISTS stepsFromRecipe;
-
 CREATE OR REPLACE VIEW stepsFromRecipe AS
     SELECT r.recipe_number, bs.step_number, bs.duration, bs.step_name, bs.step_description, bs.category
     FROM recipe r
@@ -1048,60 +1040,59 @@ INSERT INTO recipe
 VALUES(DEFAULT, 'Brigit la blanche', 3, 2, 2, 20);
 
 INSERT INTO brewing_step
-VALUES(1, 'Préparation', 0, '', 'preparation', 1);
+VALUES(1, 'Préparation', 0, '', 'Préparation', 1);
 
 INSERT INTO brewing_step
-VALUES(2, 'Empâtage', 60, '', 'beer_mash', 1);
+VALUES(2, 'Empâtage', 60, '', 'Empâtage', 1);
 
 INSERT INTO brewing_step
-VALUES(3, 'Mash-out', 15, '', 'mash_out', 1);
+VALUES(3, 'Mash-out', 15, '', 'Mash-out', 1);
 
 INSERT INTO brewing_step
-VALUES(4, 'Filatration des drêches', 0, '', 'filtration', 1);
+VALUES(4, 'Filatration des drêches', 0, '', 'Filtration', 1);
 
 INSERT INTO brewing_step
-VALUES(5, 'Mesure de la densité', 0, '', 'measure', 1);
+VALUES(5, 'Mesure de la densité', 0, '', 'Mesure', 1);
 
 INSERT INTO brewing_step
-VALUES(6, 'Ébullition', 60, '', 'boiling', 1);
+VALUES(6, 'Ébullition', 60, '', 'Ébullition', 1);
 
 INSERT INTO brewing_step
-VALUES(7, 'Refroidissement', 0, '', 'cooling', 1);
+VALUES(7, 'Refroidissement', 0, '', 'Refroidissement', 1);
 
 INSERT INTO brewing_step
-VALUES(8, 'Fermentation', 120, '', 'fermentation', 1);
+VALUES(8, 'Fermentation', 120, '', 'Fermentation', 1);
 
 INSERT INTO brewing_step
-VALUES(9, 'Mise en bouteille', 500, '', 'bottling', 1);
+VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 1);
 
 INSERT INTO brewing_step
-VALUES(1, 'Préparation', 0, '', 'preparation', 2);
+VALUES(1, 'Préparation', 0, '', 'Préparation', 2);
 
 INSERT INTO brewing_step
-VALUES(2, 'Empâtage', 60, '', 'beer_mash', 2);
+VALUES(2, 'Empâtage', 60, '', 'Empâtage', 2);
 
 INSERT INTO brewing_step
-VALUES(3, 'Mash-out', 15, '', 'mash_out', 2);
+VALUES(3, 'Mash-out', 15, '', 'Mash-out', 2);
 
 INSERT INTO brewing_step
-VALUES(4, 'Filatration des drêches', 0, '', 'filtration', 2);
+VALUES(4, 'Filatration des drêches', 0, '', 'Filtration', 2);
 
 INSERT INTO brewing_step
-VALUES(5, 'Mesure de la densité', 0, '', 'measure', 2);
+VALUES(5, 'Mesure de la densité', 0, '', 'Mesure', 2);
 
 INSERT INTO brewing_step
-VALUES(6, 'Ébullition', 60, '', 'boiling', 2);
+VALUES(6, 'Ébullition', 60, '', 'Ébullition', 2);
 
 INSERT INTO brewing_step
-VALUES(7, 'Refroidissement', 0, '', 'cooling', 2);
+VALUES(7, 'Refroidissement', 0, '', 'Refroidissement', 2);
 
 INSERT INTO brewing_step
-VALUES(8, 'Fermentation', 120, '', 'fermentation', 2);
+VALUES(8, 'Fermentation', 120, '', 'Fermentation', 2);
 
 INSERT INTO brewing_step
-VALUES(9, 'Mise en bouteille', 500, '', 'bottling', 2);
+VALUES(9, 'Mise en bouteille', 500, '', 'Embouteillage', 2);
 
--- Là ça devient compliqué de retrouver les ID des ingrédients à la main =)
 -- Recette 1 (Frida la brune)
 -- 4kg Malt pilsner / étape 2
 INSERT INTO ingredient_usage
